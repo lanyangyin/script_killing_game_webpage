@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>剧本杀游戏 - 推理进行中</title>
+    <link rel="stylesheet" href="/game/game.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">剧本杀推理游戏</h1>
+            <div class="user-info">
+                <span id="userDisplay">用户</span>
+                <button id="logoutBtn" class="btn-logout">退出登录</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 游戏主内容 -->
+    <div class="game-container">
+        <div class="game-header">
+            <h2 id="gameTitle">欢迎来到剧本杀世界</h2>
+            <p id="gameSubtitle">请选择你的角色开始游戏</p>
+        </div>
+
+        <!-- 登录状态提示 -->
+        <div id="loginStatus" class="status-message">
+            <!-- 登录状态信息将在这里显示 -->
+        </div>
+
+        <!-- 游戏内容区域 -->
+        <div class="game-content">
+            <div class="role-selection">
+                <h3>选择你的角色</h3>
+                <div class="role-cards">
+                    <div class="role-card" data-role="detective">
+                        <h4>侦探</h4>
+                        <p>负责收集线索，推理真相</p>
+                    </div>
+                    <div class="role-card" data-role="suspect">
+                        <h4>嫌疑人</h4>
+                        <p>隐藏自己的秘密，引导推理</p>
+                    </div>
+                    <div class="role-card" data-role="victim">
+                        <h4>受害者</h4>
+                        <p>提供关键信息，协助破案</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-actions">
+                <button id="startGame" class="btn-action">开始游戏</button>
+                <button id="viewRules" class="btn-secondary">查看规则</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入游戏JavaScript文件 -->
+    <script src="/game/game.js"></script>
+</body>
+</html>

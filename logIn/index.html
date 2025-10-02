@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>剧本杀网页 - 沉浸式推理游戏</title>
-    <!-- 引入外部CSS样式文件 -->
-    <link rel="stylesheet" href="login.css">
+    <title>剧本杀 - 沉浸式推理游戏</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- 背景动画元素 -->
     <div class="bg-animation">
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
         <div class="floating-element"></div>
         <div class="floating-element"></div>
         <div class="floating-element"></div>
@@ -25,7 +21,7 @@
         <!-- 页面标题 -->
         <h1>剧本杀世界</h1>
         <p class="subtitle">开启你的推理之旅</p>
-        
+
         <!-- 登录表单 -->
         <form class="form" id="loginForm">
             <!-- 用户名输入组 -->
@@ -33,19 +29,19 @@
                 <input type="text" id="username" placeholder=" " required>
                 <label for="username">用户名</label>
             </div>
-            
+
             <!-- 密码输入组 -->
             <div class="input-group">
                 <input type="password" id="password" placeholder=" " required>
                 <label for="password">密码</label>
             </div>
-            
+
             <!-- 登录按钮 -->
             <button type="submit" class="btn-login">进入游戏</button>
-            
+
             <!-- 游客登录按钮 -->
             <button type="button" class="btn-guest">游客试玩</button>
-            
+
             <!-- 额外选项 -->
             <div class="extra-options">
                 <div class="remember-me">
@@ -54,15 +50,15 @@
                 </div>
                 <a href="#" class="forgot-password">忘记密码?</a>
             </div>
-            
+
             <!-- 注册链接 -->
             <div class="register-link">
-                还没有账号? <a href="/register">立即注册</a>
+                还没有账号? <a href="#">立即注册</a>
             </div>
         </form>
     </div>
 
     <!-- 引入外部JavaScript文件 -->
-    <script src="login.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
