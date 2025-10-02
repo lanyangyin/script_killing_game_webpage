@@ -3,66 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>剧本杀网页 - 沉浸式推理游戏</title>
+    <title>重定向中 - 剧本杀游戏</title>
     <!-- 引入外部CSS样式文件 -->
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- 使用meta标签进行重定向 -->
+    <meta http-equiv="refresh" content="3; url=/home">
 </head>
 <body>
-    <!-- 背景动画元素 -->
-    <div class="bg-animation">
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-        <div class="floating-element"></div>
-    </div>
-
-    <!-- 主内容容器 -->
     <div class="container">
-        <!-- 页面标题 -->
-        <h1>剧本杀世界</h1>
-        <p class="subtitle">开启你的推理之旅</p>
-        
-        <!-- 登录表单 -->
-        <form class="form" id="loginForm">
-            <!-- 用户名输入组 -->
-            <div class="input-group">
-                <input type="text" id="username" placeholder=" " required>
-                <label for="username">用户名</label>
-            </div>
-            
-            <!-- 密码输入组 -->
-            <div class="input-group">
-                <input type="password" id="password" placeholder=" " required>
-                <label for="password">密码</label>
-            </div>
-            
-            <!-- 登录按钮 -->
-            <button type="submit" class="btn-login">进入游戏</button>
-            
-            <!-- 游客登录按钮 -->
-            <button type="button" class="btn-guest">游客试玩</button>
-            
-            <!-- 额外选项 -->
-            <div class="extra-options">
-                <div class="remember-me">
-                    <input type="checkbox" id="remember">
-                    <label for="remember">记住登录状态</label>
-                </div>
-                <a href="#" class="forgot-password">忘记密码?</a>
-            </div>
-            
-            <!-- 注册链接 -->
-            <div class="register-link">
-                还没有账号? <a href="#">立即注册</a>
-            </div>
-        </form>
+        <div class="loader"></div>
+        <h1>正在跳转至剧本杀游戏</h1>
+        <p>您正在被重定向到游戏主页，请稍候...</p>
+        <div class="countdown">
+            <span id="countdown">3</span> 秒后自动跳转
+        </div>
+        <div class="manual-redirect">
+            <p>如果页面没有自动跳转，请点击下方按钮</p>
+            <button id="redirectBtn" class="btn-redirect">立即前往</button>
+        </div>
     </div>
 
     <!-- 引入外部JavaScript文件 -->
-    <script src="login.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
