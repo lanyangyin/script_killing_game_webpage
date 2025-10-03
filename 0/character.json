@@ -1,8 +1,10 @@
 {
   "角色1": {
-    "introduction": "角色1的简介"
+    "introduction": "角色1的简介",
+    "id": "c1"
   },
   "角色2": {
-    "introduction": "角色2的简介"
+    "introduction": "角色2的简介",
+    "id": "c2"
   }
 }

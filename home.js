@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // 加载剧本数据
 async function loadScriptsData() {
     try {
-        const response = await fetch('/directory.json');
+        const response = await fetch('directory.json');
         const data = await response.json();
 
         allScripts = data.data;
