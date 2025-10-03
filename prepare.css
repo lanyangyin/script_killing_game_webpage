@@ -1,0 +1,261 @@
+/* 基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* 头部样式 */
+header {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    padding: 1.5rem 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.back-btn {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* 剧本信息区域样式 */
+.script-info-section {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.script-cover-large {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.script-details {
+    padding: 2rem;
+    position: relative;
+}
+
+.script-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.script-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    background: #f0f0f0;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.difficulty-stars {
+    color: #ffc107;
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+}
+
+.script-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    background: #6a11cb;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.script-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid #6a11cb;
+}
+
+.script-hint {
+    font-size: 1rem;
+    padding: 1.2rem;
+    background: #fff8e1;
+    border-radius: 8px;
+    border-left: 4px solid #ffc107;
+    font-style: italic;
+}
+
+/* 角色信息区域样式 */
+.characters-section {
+    margin-bottom: 3rem;
+}
+
+.characters-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    border-bottom: 2px solid #6a11cb;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.characters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.character-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.character-header {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    padding: 1.2rem;
+    text-align: center;
+}
+
+.character-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.character-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.character-intro {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+    flex-grow: 1;
+}
+
+/* 加载状态 */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.error-message {
+    text-align: center;
+    padding: 2rem;
+    background: #ffebee;
+    color: #c62828;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+/* 页脚样式 */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .script-cover-large {
+        height: 200px;
+    }
+
+    .script-name {
+        font-size: 1.6rem;
+    }
+
+    .characters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .characters-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .script-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

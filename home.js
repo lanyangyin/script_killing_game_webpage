@@ -120,6 +120,7 @@ function displayScripts() {
 }
 
 // 创建剧本卡片
+// 在 createScriptCard 函数中，为卡片添加点击事件
 function createScriptCard(script) {
     // 生成难度星级
     const difficultyStars = '★'.repeat(script.difficulty) + '☆'.repeat(5 - script.difficulty);
@@ -128,7 +129,7 @@ function createScriptCard(script) {
     const tags = script.tag.includes('-') ? allTags : script.tag;
 
     return `
-        <div class="script-card">
+        <div class="script-card" data-id="${script.id}">
             <div class="script-cover" style="background-image: url('${script.id}/cover.webp')"></div>
             <div class="script-content">
                 <div class="script-header">
@@ -162,4 +163,25 @@ function createScriptCard(script) {
             </div>
         </div>
     `;
+}
+
+// 在 displayScripts 函数后添加事件监听
+function displayScripts() {
+    const container = document.getElementById('scripts-container');
+
+    if (filteredScripts.length === 0) {
+        container.innerHTML = '<p class="no-results">没有找到匹配的剧本，请尝试其他筛选条件。</p>';
+        return;
+    }
+
+    container.innerHTML = filteredScripts.map(script => createScriptCard(script)).join('');
+
+    // 添加点击事件
+    const cards = document.querySelectorAll('.script-card');
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            const scriptId = this.getAttribute('data-id');
+            window.location.href = `prepare.html?id=${scriptId}`;
+        });
+    });
 }
