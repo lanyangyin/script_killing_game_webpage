@@ -3,27 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>重定向中 - 剧本杀游戏</title>
-    <!-- 引入外部CSS样式文件 -->
-    <link rel="stylesheet" href="style.css">
-    <!-- 使用meta标签进行重定向 -->
-    <meta http-equiv="refresh" content="3; url=/home">
+    <title>剧本杀收藏馆</title>
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
-    <div class="container">
-        <div class="loader"></div>
-        <h1>正在跳转至剧本杀游戏</h1>
-        <p>您正在被重定向到游戏主页，请稍候...</p>
-        <div class="countdown">
-            <span id="countdown">3</span> 秒后自动跳转
+    <header>
+        <div class="container">
+            <h1>剧本杀收藏馆</h1>
+            <p>探索精彩剧本，体验沉浸式推理乐趣</p>
         </div>
-        <div class="manual-redirect">
-            <p>如果页面没有自动跳转，请点击下方按钮</p>
-            <button id="redirectBtn" class="btn-redirect">立即前往</button>
-        </div>
-    </div>
+    </header>
 
-    <!-- 引入外部JavaScript文件 -->
-    <script src="script.js"></script>
+    <main class="container">
+        <section class="filters">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="搜索剧本名称...">
+                <button id="search-btn">搜索</button>
+            </div>
+
+            <div class="filter-group">
+                <label for="tag-filter">按标签筛选:</label>
+                <select id="tag-filter">
+                    <option value="all">全部标签</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="sort-by">排序方式:</label>
+                <select id="sort-by">
+                    <option value="location">推荐度优先</option>
+                    <option value="difficulty">难度从低到高</option>
+                    <option value="difficulty-desc">难度从高到低</option>
+                    <option value="time">时长从短到长</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <button id="reset-filters" class="secondary">重置筛选</button>
+            </div>
+        </section>
+
+        <section class="scripts-container">
+            <div id="scripts-grid" class="scripts-grid">
+                <!-- 剧本卡片将通过JavaScript动态生成 -->
+            </div>
+            <div id="no-results" class="no-results" style="display: none;">
+                <p>没有找到符合条件的剧本</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 剧本杀收藏馆 | 探索推理的无限可能</p>
+        </div>
+    </footer>
+
+    <script src="home.js"></script>
 </body>
 </html>

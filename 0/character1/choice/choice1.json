@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "problem": "抉择一",
+      "go_to_the_scene": "choice1章节0"
+    },
+    {
+      "problem": "抉择二",
+      "go_to_the_scene": "choice1章节1"
+    }
+  ]
+}

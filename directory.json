@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "name": "DEMO1",
+      "introduction": "这是一段剧本背景介绍示例",
+      "hint": "这是一段参与剧本前的提示示例",
+      "number_of_people": 4,
+      "tag": ["推理", "新手"],
+      "difficulty": 1,
+      "location": 0.1,
+      "time_required_for_game": 1.5,
+      "last_time_played": 0,
+      "id": 0
+    },
+    {
+      "name": "敬请期待",
+      "introduction": "",
+      "hint": "",
+      "number_of_people": 0,
+      "tag": ["-"],
+      "difficulty": 0,
+      "location": -0.1,
+      "time_required_for_game": 0,
+      "last_time_played": 0,
+      "id": -1
+    }
+  ],
+  "tags": ["推理", "变格", "本格", "新本格", "校园", "都市", "新手", "古代", "情感", "硬核", "现代"]
+}
