@@ -3,21 +3,22 @@ let allScripts = [];
 let filteredScripts = [];
 let allTags = [];
 
-// DOM 加载完成后初始化
+// DOM 加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
+    // 加载剧本数据
     loadScriptsData();
 
-    // 事件监听
-    document.getElementById('search-btn').addEventListener('click', applyFilters);
+    // 设置事件监听器
+    document.getElementById('search-btn').addEventListener('click', filterScripts);
     document.getElementById('search-input').addEventListener('keyup', function(event) {
         if (event.key === 'Enter') {
-            applyFilters();
+            filterScripts();
         }
     });
 
-    document.getElementById('tag-filter').addEventListener('change', applyFilters);
-    document.getElementById('sort-by').addEventListener('change', applyFilters);
-    document.getElementById('reset-filters').addEventListener('click', resetFilters);
+    document.getElementById('tag-filter').addEventListener('change', filterScripts);
+    document.getElementById('difficulty-filter').addEventListener('change', filterScripts);
+    document.getElementById('sort-by').addEventListener('change', filterScripts);
 });
 
 // 加载剧本数据
@@ -29,16 +30,16 @@ async function loadScriptsData() {
         allScripts = data.data;
         allTags = data.tags;
 
-        // 初始化标签筛选器
+        // 填充标签筛选器
         populateTagFilter();
 
-        // 显示所有剧本
+        // 初始显示所有剧本
         filteredScripts = [...allScripts];
         displayScripts();
     } catch (error) {
         console.error('加载剧本数据失败:', error);
-        document.getElementById('scripts-grid').innerHTML =
-            '<div class="no-results"><p>加载剧本数据失败，请稍后重试</p></div>';
+        document.getElementById('scripts-container').innerHTML =
+            '<p class="error-message">加载剧本数据失败，请稍后重试。</p>';
     }
 }
 
@@ -54,13 +55,14 @@ function populateTagFilter() {
     });
 }
 
-// 应用筛选条件
-function applyFilters() {
+// 筛选剧本
+function filterScripts() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const selectedTag = document.getElementById('tag-filter').value;
+    const selectedDifficulty = document.getElementById('difficulty-filter').value;
     const sortBy = document.getElementById('sort-by').value;
 
-    // 筛选剧本
+    // 应用筛选条件
     filteredScripts = allScripts.filter(script => {
         // 搜索条件
         const matchesSearch = script.name.toLowerCase().includes(searchTerm) ||
@@ -69,38 +71,36 @@ function applyFilters() {
         // 标签条件
         let matchesTag = true;
         if (selectedTag !== 'all') {
-            // 如果剧本标签为["-"]，则包含所有标签
-            if (script.tag[0] === '-') {
-                matchesTag = true;
-            } else {
-                matchesTag = script.tag.includes(selectedTag);
-            }
+            matchesTag = script.tag.includes(selectedTag) || script.tag.includes('-');
         }
 
-        return matchesSearch && matchesTag;
+        // 难度条件
+        let matchesDifficulty = true;
+        if (selectedDifficulty !== 'all') {
+            matchesDifficulty = script.difficulty == selectedDifficulty;
+        }
+
+        return matchesSearch && matchesTag && matchesDifficulty;
     });
 
-    // 排序剧本
+    // 应用排序
     sortScripts(sortBy);
 
-    // 显示结果
+    // 显示筛选后的剧本
     displayScripts();
 }
 
-// 排序剧本
+// 剧本排序
 function sortScripts(sortBy) {
     switch(sortBy) {
         case 'location':
             filteredScripts.sort((a, b) => b.location - a.location);
             break;
+        case 'name':
+            filteredScripts.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
+            break;
         case 'difficulty':
-            filteredScripts.sort((a, b) => a.difficulty - b.difficulty);
-            break;
-        case 'difficulty-desc':
             filteredScripts.sort((a, b) => b.difficulty - a.difficulty);
-            break;
-        case 'time':
-            filteredScripts.sort((a, b) => a.time_required_for_game - b.time_required_for_game);
             break;
         default:
             filteredScripts.sort((a, b) => b.location - a.location);
@@ -109,71 +109,57 @@ function sortScripts(sortBy) {
 
 // 显示剧本
 function displayScripts() {
-    const scriptsGrid = document.getElementById('scripts-grid');
-    const noResults = document.getElementById('no-results');
+    const container = document.getElementById('scripts-container');
 
     if (filteredScripts.length === 0) {
-        scriptsGrid.innerHTML = '';
-        noResults.style.display = 'block';
+        container.innerHTML = '<p class="no-results">没有找到匹配的剧本，请尝试其他筛选条件。</p>';
         return;
     }
 
-    noResults.style.display = 'none';
-
-    scriptsGrid.innerHTML = filteredScripts.map(script => {
-        // 处理难度显示（星级）
-        const difficultyStars = Array(5).fill(0).map((_, index) => {
-            return index < script.difficulty ?
-                '<span class="star">★</span>' :
-                '<span class="star empty">★</span>';
-        }).join('');
-
-        // 处理标签显示
-        const tags = script.tag[0] === '-' ?
-            allTags.map(tag => `<span class="tag">${tag}</span>`).join('') :
-            script.tag.map(tag => `<span class="tag">${tag}</span>`).join('');
-
-        // 处理封面图片
-        const coverUrl = `${script.id}/cover.webp`;
-
-        return `
-            <div class="script-card">
-                <div class="script-cover">
-                    ${script.id >= -10 ?
-                        `<img src="${coverUrl}" alt="${script.name}封面" onerror="this.style.display='none'; this.parentNode.innerHTML='封面图片加载失败';">` :
-                        '暂无封面'
-                    }
-                </div>
-                <div class="script-content">
-                    <h3 class="script-title">${script.name}</h3>
-                    <div class="script-meta">
-                        <div class="difficulty">
-                            难度: ${difficultyStars}
-                        </div>
-                        <div class="time">${script.time_required_for_game}小时</div>
-                    </div>
-                    <div class="script-tags">
-                        ${tags}
-                    </div>
-                    ${script.introduction ? `<p class="script-intro">${script.introduction}</p>` : ''}
-                    ${script.hint ? `<div class="script-hint">参前提示: ${script.hint}</div>` : ''}
-                    <div class="script-footer">
-                        <div class="players">${script.number_of_people}人本</div>
-                        <div class="last-played">${script.last_time_played ? `上次游玩: ${script.last_time_played}天前` : '尚未游玩'}</div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }).join('');
+    container.innerHTML = filteredScripts.map(script => createScriptCard(script)).join('');
 }
 
-// 重置筛选条件
-function resetFilters() {
-    document.getElementById('search-input').value = '';
-    document.getElementById('tag-filter').value = 'all';
-    document.getElementById('sort-by').value = 'location';
+// 创建剧本卡片
+function createScriptCard(script) {
+    // 生成难度星级
+    const difficultyStars = '★'.repeat(script.difficulty) + '☆'.repeat(5 - script.difficulty);
 
-    filteredScripts = [...allScripts];
-    sortScripts('location');
-    displayScripts();
+    // 处理标签
+    const tags = script.tag.includes('-') ? allTags : script.tag;
+
+    return `
+        <div class="script-card">
+            <div class="script-cover" style="background-image: url('${script.id}/cover.webp')"></div>
+            <div class="script-content">
+                <div class="script-header">
+                    <div>
+                        <h3 class="script-name">${script.name}</h3>
+                    </div>
+                </div>
+
+                <div class="script-meta">
+                    <div class="meta-item">
+                        <span>${script.number_of_people}人</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>${script.time_required_for_game}小时</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>难度:</span>
+                        <span class="difficulty-stars">${difficultyStars}</span>
+                    </div>
+                </div>
+
+                <div class="script-tags">
+                    ${tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+
+                <div class="script-description">
+                    ${script.introduction || '暂无剧本介绍'}
+                </div>
+
+                ${script.hint ? `<div class="script-hint">提示: ${script.hint}</div>` : ''}
+            </div>
+        </div>
+    `;
 }

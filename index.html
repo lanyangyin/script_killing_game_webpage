@@ -5,57 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>剧本杀收藏馆</title>
     <link rel="stylesheet" href="home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div class="container">
             <h1>剧本杀收藏馆</h1>
-            <p>探索精彩剧本，体验沉浸式推理乐趣</p>
+            <p>探索沉浸式推理体验</p>
         </div>
     </header>
 
     <main class="container">
-        <section class="filters">
+        <section class="filters-section">
             <div class="search-box">
                 <input type="text" id="search-input" placeholder="搜索剧本名称...">
                 <button id="search-btn">搜索</button>
             </div>
 
-            <div class="filter-group">
-                <label for="tag-filter">按标签筛选:</label>
-                <select id="tag-filter">
-                    <option value="all">全部标签</option>
-                </select>
-            </div>
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="tag-filter">标签筛选:</label>
+                    <select id="tag-filter">
+                        <option value="all">所有标签</option>
+                    </select>
+                </div>
 
-            <div class="filter-group">
-                <label for="sort-by">排序方式:</label>
-                <select id="sort-by">
-                    <option value="location">推荐度优先</option>
-                    <option value="difficulty">难度从低到高</option>
-                    <option value="difficulty-desc">难度从高到低</option>
-                    <option value="time">时长从短到长</option>
-                </select>
-            </div>
+                <div class="filter-group">
+                    <label for="difficulty-filter">难度筛选:</label>
+                    <select id="difficulty-filter">
+                        <option value="all">所有难度</option>
+                        <option value="1">★ 新手</option>
+                        <option value="2">★★ 简单</option>
+                        <option value="3">★★★ 中等</option>
+                        <option value="4">★★★★ 困难</option>
+                        <option value="5">★★★★★ 专家</option>
+                    </select>
+                </div>
 
-            <div class="filter-group">
-                <button id="reset-filters" class="secondary">重置筛选</button>
+                <div class="filter-group">
+                    <label for="sort-by">排序方式:</label>
+                    <select id="sort-by">
+                        <option value="location">推荐排序</option>
+                        <option value="name">名称排序</option>
+                        <option value="difficulty">难度排序</option>
+                    </select>
+                </div>
             </div>
         </section>
 
-        <section class="scripts-container">
-            <div id="scripts-grid" class="scripts-grid">
-                <!-- 剧本卡片将通过JavaScript动态生成 -->
-            </div>
-            <div id="no-results" class="no-results" style="display: none;">
-                <p>没有找到符合条件的剧本</p>
-            </div>
+        <section class="scripts-grid" id="scripts-container">
+            <!-- 剧本卡片将通过JavaScript动态加载 -->
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2023 剧本杀收藏馆 | 探索推理的无限可能</p>
+            <p>&copy; 2023 剧本杀收藏馆 - 沉浸式推理体验平台</p>
         </div>
     </footer>
 
