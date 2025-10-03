@@ -12,20 +12,58 @@
 <body>
     <header>
         <div class="container">
-            <a href="index.html" class="back-btn">← 返回主页</a>
-            <h1 id="script-title">剧本详情</h1>
+            <h1 id="script-name">剧本详情</h1>
+            <a href="index.html" class="back-btn">返回主页</a>
         </div>
     </header>
 
     <main class="container">
-        <section class="script-info-section" id="script-info">
-            <!-- 剧本信息将通过JavaScript动态加载 -->
+        <section class="script-info-section">
+            <div class="script-cover-large">
+                <!-- 封面图片将通过JavaScript加载 -->
+            </div>
+
+            <div class="script-details">
+                <div class="script-meta-info">
+                    <div class="meta-item">
+                        <span class="label">玩家人数:</span>
+                        <span id="player-count" class="value">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">预计时长:</span>
+                        <span id="game-time" class="value">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">难度:</span>
+                        <span id="difficulty" class="value">-</span>
+                    </div>
+                </div>
+
+                <div class="script-tags" id="script-tags">
+                    <!-- 标签将通过JavaScript加载 -->
+                </div>
+
+                <div class="script-intro">
+                    <h3>剧本背景</h3>
+                    <p id="script-introduction">加载中...</p>
+                </div>
+
+                <div class="script-hint">
+                    <h3>参与提示</h3>
+                    <p id="script-hint">加载中...</p>
+                </div>
+            </div>
         </section>
 
         <section class="characters-section">
-            <h2>角色信息</h2>
+            <h2>角色选择</h2>
             <div class="characters-grid" id="characters-container">
-                <!-- 角色信息将通过JavaScript动态加载 -->
+                <!-- 角色卡片将通过JavaScript动态加载 -->
+            </div>
+
+            <div class="start-game-section">
+                <button id="start-game-btn" disabled>开始游戏</button>
+                <p class="hint">请先选择一个角色</p>
             </div>
         </section>
     </main>

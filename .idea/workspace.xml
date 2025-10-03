@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6819c957-037c-4b52-9582-c28a7dd2abbc" name="更改" comment="ing">
-      <change beforePath="$PROJECT_DIR$/prepare.js" beforeDir="false" afterPath="$PROJECT_DIR$/prepare.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prepare.html" beforeDir="false" afterPath="$PROJECT_DIR$/prepare.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +184,23 @@
       <option name="project" value="LOCAL" />
       <updated>1759505292039</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="ing">
+      <option name="closed" value="true" />
+      <created>1759506364599</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1759506364599</updated>
+    </task>
+    <task id="LOCAL-00015" summary="ing">
+      <option name="closed" value="true" />
+      <created>1759506371618</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1759506371618</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

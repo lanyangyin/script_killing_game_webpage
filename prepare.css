@@ -25,27 +25,13 @@ header {
     color: white;
     padding: 1.5rem 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 header .container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-}
-
-.back-btn {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-    transition: all 0.3s;
-}
-
-.back-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.5);
+    align-items: center;
 }
 
 header h1 {
@@ -53,56 +39,67 @@ header h1 {
     font-weight: 700;
 }
 
-/* 剧本信息区域样式 */
+.back-btn {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 剧本信息区域 */
 .script-info-section {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin: 2rem 0;
     display: flex;
-    flex-direction: column;
+    gap: 2rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin: 2rem 0;
 }
 
 .script-cover-large {
-    height: 300px;
+    flex: 0 0 300px;
+    height: 400px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     background-size: cover;
     background-position: center;
-    position: relative;
+    background-color: #eee; /* 默认背景色 */
 }
 
 .script-details {
-    padding: 2rem;
-    position: relative;
+    flex: 1;
 }
 
-.script-name {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #333;
-}
-
-.script-meta {
+.script-meta-info {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    gap: 2rem;
     margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
 }
 
 .meta-item {
     display: flex;
-    align-items: center;
-    background: #f0f0f0;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-weight: 500;
+    flex-direction: column;
 }
 
-.difficulty-stars {
-    color: #ffc107;
-    font-size: 1.1rem;
-    margin-left: 0.5rem;
+.meta-item .label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.meta-item .value {
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 .script-tags {
@@ -120,103 +117,136 @@ header h1 {
     font-size: 0.85rem;
 }
 
-.script-description {
-    font-size: 1.1rem;
-    line-height: 1.7;
+.script-intro, .script-hint {
     margin-bottom: 1.5rem;
-    padding: 1.5rem;
-    background: #f9f9f9;
-    border-radius: 8px;
+}
+
+.script-intro h3, .script-hint h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #444;
     border-left: 4px solid #6a11cb;
+    padding-left: 0.5rem;
 }
 
-.script-hint {
-    font-size: 1rem;
-    padding: 1.2rem;
-    background: #fff8e1;
-    border-radius: 8px;
-    border-left: 4px solid #ffc107;
-    font-style: italic;
+.script-intro p, .script-hint p {
+    line-height: 1.7;
+    color: #555;
 }
 
-/* 角色信息区域样式 */
+/* 角色区域 */
 .characters-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     margin-bottom: 3rem;
 }
 
 .characters-section h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     margin-bottom: 1.5rem;
-    color: #333;
-    border-bottom: 2px solid #6a11cb;
+    color: #444;
     padding-bottom: 0.5rem;
-    display: inline-block;
+    border-bottom: 2px solid #f0f0f0;
 }
 
 .characters-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .character-card {
     background: white;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s, box-shadow 0.3s;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    cursor: pointer;
+    border: 2px solid transparent;
 }
 
 .character-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
 }
 
-.character-header {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    padding: 1.2rem;
-    text-align: center;
+.character-card.selected {
+    border-color: #6a11cb;
+    box-shadow: 0 6px 15px rgba(106, 17, 203, 0.3);
+}
+
+.character-avatar {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    background-color: #eee; /* 默认背景色 */
+}
+
+.character-info {
+    padding: 1rem;
 }
 
 .character-name {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-.character-content {
-    padding: 1.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
 }
 
 .character-intro {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #555;
-    flex-grow: 1;
-}
-
-/* 加载状态 */
-.loading {
-    text-align: center;
-    padding: 2rem;
-    font-size: 1.2rem;
+    font-size: 0.85rem;
     color: #666;
+    line-height: 1.5;
+    max-height: 4.5em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
-.error-message {
+/* 开始游戏区域 */
+.start-game-section {
     text-align: center;
-    padding: 2rem;
-    background: #ffebee;
-    color: #c62828;
-    border-radius: 8px;
-    margin: 1rem 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+#start-game-btn {
+    background: #6a11cb;
+    color: white;
+    border: none;
+    padding: 0.8rem 2.5rem;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+}
+
+#start-game-btn:enabled {
+    background: #6a11cb;
+}
+
+#start-game-btn:enabled:hover {
+    background: #5a0db3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
+}
+
+#start-game-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.hint {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #888;
 }
 
 /* 页脚样式 */
@@ -225,37 +255,43 @@ footer {
     color: #fff;
     text-align: center;
     padding: 1.5rem 0;
-    margin-top: 2rem;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+    .script-info-section {
+        flex-direction: column;
+    }
+
+    .script-cover-large {
+        flex: none;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .script-meta-info {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .characters-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
     header .container {
         flex-direction: column;
         gap: 1rem;
         text-align: center;
     }
 
-    .script-cover-large {
-        height: 200px;
-    }
-
-    .script-name {
-        font-size: 1.6rem;
-    }
-
     .characters-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-}
-
-@media (max-width: 480px) {
-    .characters-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .script-meta {
-        flex-direction: column;
-        align-items: flex-start;
+    .character-avatar {
+        height: 150px;
     }
 }
