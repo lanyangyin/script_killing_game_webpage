@@ -25,7 +25,7 @@ async function loadScriptData(scriptId) {
         document.getElementById('characters-container').innerHTML = '<div class="loading">加载角色信息中...</div>';
 
         // 加载剧本列表数据
-        const scriptsResponse = await fetch('/directory.json');
+        const scriptsResponse = await fetch('directory.json');
         const scriptsData = await scriptsResponse.json();
 
         // 查找对应ID的剧本
