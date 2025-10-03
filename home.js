@@ -139,7 +139,7 @@ function displayScripts() {
         return `
             <div class="script-card">
                 <div class="script-cover">
-                    ${script.id >= 0 ?
+                    ${script.id >= -10 ?
                         `<img src="${coverUrl}" alt="${script.name}封面" onerror="this.style.display='none'; this.parentNode.innerHTML='封面图片加载失败';">` :
                         '暂无封面'
                     }
