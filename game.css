@@ -94,16 +94,19 @@ section {
     flex: 1;
 }
 
+/* 所有角色区域 - 修改角色卡片样式 */
 .character-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px; /* 减少间距 */
     position: relative;
     cursor: pointer;
     padding: 5px;
     border-radius: 5px;
     transition: background 0.3s;
-    min-height: 50px; /* 确保最小高度 */
+    min-height: 50px;
+    width: auto; /* 改为自动宽度 */
+    max-width: 180px; /* 限制最大宽度 */
 }
 
 .character-item:hover {
@@ -111,13 +114,13 @@ section {
 }
 
 .character-avatar-small {
-    width: 40px;
-    height: 40px;
+    width: 35px; /* 稍微减小头像尺寸 */
+    height: 35px;
     border-radius: 50%;
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    background-color: #333; /* 添加背景色以防图片加载失败 */
-    flex-shrink: 0; /* 防止头像被压缩 */
+    background-color: #333;
+    flex-shrink: 0;
 }
 
 .character-avatar-small img {
@@ -127,13 +130,13 @@ section {
 }
 
 .character-name-small {
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* 稍微减小字体 */
     color: white;
-    white-space: nowrap; /* 防止名字换行 */
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* 名字过长时显示省略号 */
+    text-overflow: ellipsis;
     flex: 1;
-    min-width: 0; /* 允许文本溢出时显示省略号 */
+    min-width: 0;
 }
 
 .character-tooltip {
@@ -490,15 +493,20 @@ section {
             "process-content process-content"
             "action-log action-log"
             "process-control process-control";
-        height: auto;
+        height: auto; /* 改为 auto */
         min-height: 100vh;
         overflow-y: auto; /* 允许垂直滚动 */
+        overflow-x: hidden; /* 防止水平滚动 */
+    }
+
+    /* 移除之前可能存在的最大高度限制 */
+    section {
+        max-height: none !important;
     }
 
     .character-item {
-        flex-direction: column;
-        text-align: center;
-        min-height: 70px; /* 增加最小高度以适应垂直布局 */
+        max-width: 160px; /* 平板端稍微小一点 */
+        gap: 6px;
     }
 
     .character-tooltip {
@@ -507,6 +515,11 @@ section {
         transform: translateX(-50%);
         margin-left: 0;
         margin-top: 10px;
+    }
+
+    .character-avatar-small {
+        width: 32px;
+        height: 32px;
     }
 
     .character-name-small {
@@ -518,7 +531,7 @@ section {
 @media (max-width: 768px) {
     .game-container {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto 2fr auto auto;
+        grid-template-rows: auto auto auto auto auto auto auto; /* 改为 auto 让内容决定高度 */
         grid-template-areas:
             "player-info"
             "all-characters"
@@ -529,14 +542,20 @@ section {
             "process-control";
         gap: 8px;
         padding: 8px;
-        height: auto;
+        height: auto; /* 改为 auto */
         min-height: 100vh;
         overflow-y: auto; /* 允许垂直滚动 */
+        overflow-x: hidden; /* 防止水平滚动 */
+    }
+
+    body {
+        overflow: auto; /* 确保 body 也可以滚动 */
     }
 
     section {
         padding: 10px;
         max-height: none; /* 移除最大高度限制 */
+        min-height: auto; /* 移除最小高度限制 */
     }
 
     .player-avatar {
@@ -550,6 +569,7 @@ section {
 
     .content-container {
         padding: 15px;
+        min-height: 200px; /* 设置一个合理的最小高度 */
     }
 
     .plot-text {
@@ -563,53 +583,91 @@ section {
 
     /* 角色区域在竖屏下使用水平滚动布局 */
     .all-characters {
-        max-height: 150px; /* 限制高度 */
+        max-height: 120px; /* 降低整体高度 */
+        overflow: hidden;
     }
 
     .characters-list {
-        flex-direction: row; /* 水平排列 */
-        overflow-x: auto; /* 水平滚动 */
+        flex-direction: row;
+        overflow-x: auto;
         overflow-y: hidden;
         padding-bottom: 5px;
+        height: 100%;
+        gap: 8px; /* 添加卡片间距 */
     }
 
     .character-item {
         flex-direction: column;
         text-align: center;
-        min-width: 70px; /* 设置最小宽度 */
-        min-height: auto;
-        flex-shrink: 0; /* 防止被压缩 */
+        min-width: 60px; /* 减小最小宽度 */
+        max-width: 80px; /* 限制最大宽度 */
+        min-height: 80px; /* 设置合适的高度 */
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .character-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
     }
 
     .character-avatar-small {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
     }
 
     .character-name-small {
         font-size: 0.7rem;
-        margin-top: 5px;
+        margin-top: 3px;
+        line-height: 1.2;
+        max-width: 70px; /* 限制名字宽度 */
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
+    /* 调整提示框位置 */
     .character-tooltip {
         left: 50%;
-        top: 100%;
+        top: calc(100% + 5px);
         transform: translateX(-50%);
         margin-left: 0;
-        margin-top: 10px;
-        width: 150px;
-        font-size: 0.8rem;
+        width: 140px;
+        font-size: 0.75rem;
+        z-index: 1000;
     }
 
-    /* 调整其他区域的高度限制 */
+    /* 移除其他区域的高度限制，让它们自然扩展 */
     .process-history,
     .clues-area,
     .action-log {
-        max-height: 200px;
+        max-height: none;
+        overflow-y: auto; /* 如果内容过多，内部可以滚动 */
     }
 
     .process-content {
-        max-height: 400px;
+        max-height: none;
+        min-height: 300px; /* 设置一个合理的最小高度 */
+    }
+
+    /* 确保操作记录区域可以滚动 */
+    .log-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    /* 确保线索列表可以滚动 */
+    .clues-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    /* 确保历史列表可以滚动 */
+    .history-list {
+        max-height: 200px;
+        overflow-y: auto;
     }
 }
 
@@ -633,22 +691,29 @@ section {
         font-size: 1rem;
     }
 
+    .all-characters {
+        max-height: 110px;
+    }
+
     .character-item {
-        min-width: 60px;
+        min-width: 55px;
+        max-width: 70px;
+        min-height: 75px;
     }
 
     .character-avatar-small {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
     }
 
     .character-name-small {
         font-size: 0.65rem;
+        max-width: 60px;
     }
 
     .character-tooltip {
-        width: 130px;
-        font-size: 0.75rem;
+        width: 120px;
+        font-size: 0.7rem;
     }
 
     .process-history h3,
@@ -661,6 +726,10 @@ section {
     #next-process-btn {
         padding: 10px 25px;
         font-size: 1.1rem;
+    }
+
+    .content-container {
+        min-height: 150px; /* 在更小的屏幕上调整最小高度 */
     }
 }
 
@@ -736,4 +805,34 @@ section {
     color: white;
     font-weight: 500;
     border-left: 3px solid #2575fc;
+}
+
+/* 可选：为角色卡片添加更美观的样式 */
+.character-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.character-item:hover {
+    border-color: rgba(106, 17, 203, 0.5);
+    box-shadow: 0 2px 8px rgba(106, 17, 203, 0.3);
+}
+
+/* 在移动端水平滚动时，添加滚动条样式 */
+.characters-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.characters-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.characters-list::-webkit-scrollbar-thumb {
+    background: rgba(106, 17, 203, 0.6);
+    border-radius: 2px;
+}
+
+.characters-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(106, 17, 203, 0.8);
 }

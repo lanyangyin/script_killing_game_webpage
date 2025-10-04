@@ -451,6 +451,11 @@ async function showVoteProcess(process) {
 
         document.getElementById('content-container').innerHTML = voteHTML;
 
+        // 初始状态下禁用按钮
+        const nextButton = document.getElementById('next-process-btn');
+        nextButton.disabled = true;
+        nextButton.textContent = '未完成';
+
         // 添加选项点击事件
         document.querySelectorAll('.vote-option').forEach(option => {
             option.addEventListener('click', function() {
@@ -483,6 +488,11 @@ async function showVoteProcess(process) {
         document.getElementById('content-container').innerHTML = `
             <div class="plot-text">投票内容加载失败。</div>
         `;
+
+        // 出错时也确保按钮状态正确
+        const nextButton = document.getElementById('next-process-btn');
+        nextButton.disabled = false;
+        nextButton.textContent = getNextButtonText();
     }
 }
 
@@ -532,6 +542,11 @@ async function showChoiceProcess(process) {
 
         document.getElementById('content-container').innerHTML = choiceHTML;
 
+        // 初始状态下禁用按钮
+        const nextButton = document.getElementById('next-process-btn');
+        nextButton.disabled = true;
+        nextButton.textContent = '未完成';
+
         // 添加选项点击事件
         document.querySelectorAll('.choice-option').forEach(option => {
             option.addEventListener('click', function() {
@@ -561,6 +576,11 @@ async function showChoiceProcess(process) {
         document.getElementById('content-container').innerHTML = `
             <div class="plot-text">选择内容加载失败。</div>
         `;
+
+        // 出错时也确保按钮状态正确
+        const nextButton = document.getElementById('next-process-btn');
+        nextButton.disabled = false;
+        nextButton.textContent = getNextButtonText();
     }
 }
 
