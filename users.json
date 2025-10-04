@@ -1,5 +1,16 @@
 {
-  "demo": {
+  "ordinary": [
+    {
+      "user": "demo",
+      "password": "password"
+    },
+    {
+      "user": "demo1",
+      "password": "password"
+    }
+  ],
+  "tourist": {
+    "user": "tourist",
     "password": "password"
   }
 }

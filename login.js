@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 处理登录函数
-    function handleLogin(username, password, remember) {
-        // 获取登录按钮
+    // 修改 handleLogin 函数
+    async function handleLogin(username, password, remember) {
         const submitBtn = document.querySelector('.btn-login');
         const originalText = submitBtn.textContent;
 
@@ -75,15 +75,16 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.textContent = '登录中...';
         submitBtn.disabled = true;
 
-        // 模拟网络请求延迟
-        setTimeout(function() {
-            // 模拟登录成功
-            if (username === 'demo' && password === 'password') {
+        try {
+            // 验证用户
+            const validation = await validateUser(username, password);
+
+            if (validation.isValid) {
                 // 存储登录状态到sessionStorage
                 const loginData = {
                     isLoggedIn: true,
                     username: username,
-                    isGuest: false,
+                    isGuest: validation.isTourist,
                     loginTime: new Date().toISOString()
                 };
                 sessionStorage.setItem('jubenshaLogin', JSON.stringify(loginData));
@@ -97,22 +98,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 showMessage(`欢迎 ${username}！登录成功`, 'success');
 
-                // 跳转到游戏页面
+                // 跳转到主页，传递用户参数
                 setTimeout(function() {
-                    window.location.href = 'game.html';
+                    const params = new URLSearchParams({
+                        user: username,
+                        pwd: password
+                    });
+                    window.location.href = `index.html?${params.toString()}`;
                 }, 1500);
             } else {
-                // 登录失败
                 showMessage('用户名或密码错误，请重试', 'error');
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }
-        }, 1500);
+        } catch (error) {
+            showMessage('登录失败，请稍后重试', 'error');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
+    // 验证用户函数
+    async function validateUser(username, password) {
+        try {
+            const response = await fetch('users.json');
+            const users = await response.json();
+
+            // 检查普通用户
+            const ordinaryUser = users.ordinary.find(u => u.user === username && u.password === password);
+            if (ordinaryUser) {
+                return { isValid: true, isTourist: false };
+            }
+
+            // 检查游客账号
+            if (username === users.tourist.user && password === users.tourist.password) {
+                return { isValid: true, isTourist: true };
+            }
+
+            return { isValid: false };
+        } catch (error) {
+            console.error('验证用户失败:', error);
+            return { isValid: false };
+        }
     }
 
     // 处理游客登录函数
-    function handleGuestLogin() {
-        // 获取游客登录按钮
+    // 修改 handleGuestLogin 函数
+    async function handleGuestLogin() {
         const guestBtn = document.querySelector('.btn-guest');
         const originalText = guestBtn.textContent;
 
@@ -120,11 +152,12 @@ document.addEventListener('DOMContentLoaded', function() {
         guestBtn.textContent = '进入中...';
         guestBtn.disabled = true;
 
-        // 生成随机游客用户名
-        const guestUsername = '游客_' + Math.floor(Math.random() * 10000);
+        try {
+            const response = await fetch('users.json');
+            const users = await response.json();
 
-        // 模拟网络请求延迟
-        setTimeout(function() {
+            const guestUsername = '游客_' + Math.floor(Math.random() * 10000);
+
             // 存储游客登录状态到sessionStorage
             const loginData = {
                 isLoggedIn: true,
@@ -136,11 +169,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             showMessage(`欢迎 ${guestUsername}！您已进入游客模式`, 'success');
 
-            // 跳转到游戏页面
+            // 跳转到主页，使用游客账号密码
             setTimeout(function() {
-                window.location.href = '/game';
+                const params = new URLSearchParams({
+                    user: users.tourist.user,
+                    pwd: users.tourist.password
+                });
+                window.location.href = `index.html?${params.toString()}`;
             }, 1500);
-        }, 1000);
+        } catch (error) {
+            showMessage('游客登录失败，请稍后重试', 'error');
+            guestBtn.textContent = originalText;
+            guestBtn.disabled = false;
+        }
     }
 
     // 显示消息函数

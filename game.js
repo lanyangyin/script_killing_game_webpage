@@ -16,9 +16,23 @@ let isReviewingHistory = false; // 标记是否正在回顾历史流程
 let reviewingProcessIndex = null; // 正在回顾的流程索引
 
 // DOM 加载完成后执行
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // 获取URL参数中的剧本ID和角色ID
     const urlParams = new URLSearchParams(window.location.search);
+    const user = urlParams.get('user');
+    const pwd = urlParams.get('pwd');
+
+    if (!user || !pwd) {
+        redirectToLogin();
+        return;
+    }
+
+    const isValid = await validateCredentials(user, pwd);
+    if (!isValid) {
+        redirectToLogin();
+        return;
+    }
+
     scriptId = urlParams.get('id');
     characterId = urlParams.get('cid');
 
@@ -877,7 +891,7 @@ function nextProcess() {
 
     // 如果当前是真相页面，返回首页
     if (isShowingTruth) {
-        window.location.href = 'index.html';
+        window.location.href = addUserParamsToUrl('index.html');
         return;
     }
 

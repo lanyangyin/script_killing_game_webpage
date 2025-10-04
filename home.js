@@ -3,6 +3,40 @@ let allScripts = [];
 let filteredScripts = [];
 let allTags = [];
 
+// 在 home.js 开头添加验证
+document.addEventListener('DOMContentLoaded', async function() {
+    // 验证用户
+    const urlParams = new URLSearchParams(window.location.search);
+    const user = urlParams.get('user');
+    const pwd = urlParams.get('pwd');
+
+    if (!user || !pwd) {
+        redirectToLogin();
+        return;
+    }
+
+    const isValid = await validateCredentials(user, pwd);
+    if (!isValid) {
+        redirectToLogin();
+        return;
+    }
+
+    // 验证通过，继续原有逻辑
+    loadScriptsData();
+
+    // 设置事件监听器
+    document.getElementById('search-btn').addEventListener('click', filterScripts);
+    document.getElementById('search-input').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            filterScripts();
+        }
+    });
+
+    document.getElementById('tag-filter').addEventListener('change', filterScripts);
+    document.getElementById('difficulty-filter').addEventListener('change', filterScripts);
+    document.getElementById('sort-by').addEventListener('change', filterScripts);
+});
+
 // DOM 加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
     // 加载剧本数据
@@ -166,6 +200,7 @@ function createScriptCard(script) {
 }
 
 // 在 displayScripts 函数后添加事件监听
+// 修改 displayScripts 函数中的跳转逻辑
 function displayScripts() {
     const container = document.getElementById('scripts-container');
 
@@ -181,7 +216,8 @@ function displayScripts() {
     cards.forEach(card => {
         card.addEventListener('click', function() {
             const scriptId = this.getAttribute('data-id');
-            window.location.href = `prepare.html?id=${scriptId}`;
+            const url = addUserParamsToUrl(`prepare.html?id=${scriptId}`);
+            window.location.href = url;
         });
     });
 }

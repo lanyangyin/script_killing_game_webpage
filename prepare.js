@@ -3,6 +3,39 @@ let scriptData = null;
 let characterData = null;
 let selectedCharacter = null;
 
+// 在 prepare.js 开头添加验证
+document.addEventListener('DOMContentLoaded', async function() {
+    // 验证用户
+    const urlParams = new URLSearchParams(window.location.search);
+    const user = urlParams.get('user');
+    const pwd = urlParams.get('pwd');
+
+    if (!user || !pwd) {
+        redirectToLogin();
+        return;
+    }
+
+    const isValid = await validateCredentials(user, pwd);
+    if (!isValid) {
+        redirectToLogin();
+        return;
+    }
+
+    // 验证通过，继续原有逻辑
+    const scriptId = urlParams.get('id');
+    if (scriptId) {
+        loadScriptData(scriptId);
+    } else {
+        document.querySelector('main').innerHTML = `
+            <div class="error-container">
+                <h2>错误</h2>
+                <p>未找到指定的剧本，请返回主页重新选择。</p>
+                <a href="${addUserParamsToUrl('index.html')}" class="back-btn">返回主页</a>
+            </div>
+        `;
+    }
+});
+
 // DOM 加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
     // 获取URL参数中的剧本ID
@@ -165,16 +198,16 @@ function selectCharacter(card) {
 }
 
 // 开始游戏按钮事件
+// 修改开始游戏按钮事件
 document.getElementById('start-game-btn').addEventListener('click', function() {
     if (!selectedCharacter) {
         alert('请先选择一个角色');
         return;
     }
 
-    // 获取剧本id
     const urlParams = new URLSearchParams(window.location.search);
     const scriptId = urlParams.get('id');
 
-    // 跳转到game.html，同时传递剧本id和角色id
-    window.location.href = `game.html?id=${scriptId}&cid=${selectedCharacter}`;
+    const url = addUserParamsToUrl(`game.html?id=${scriptId}&cid=${selectedCharacter}`);
+    window.location.href = url;
 });
