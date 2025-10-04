@@ -5,20 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6819c957-037c-4b52-9582-c28a7dd2abbc" name="更改" comment="ing">
-      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/iconic.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/线索1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/线索2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/iconic.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/线索a.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/线索b.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/choice/choice1.json" beforeDir="false" afterPath="$PROJECT_DIR$/0/c1/choice/choice1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/clues.json" beforeDir="false" afterPath="$PROJECT_DIR$/0/c1/clue/scene1/clues.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/vote/vote1.json" beforeDir="false" afterPath="$PROJECT_DIR$/0/c1/vote/vote1.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/game.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.html" beforeDir="false" afterPath="$PROJECT_DIR$/game.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prepare.html" beforeDir="false" afterPath="$PROJECT_DIR$/prepare.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prepare.js" beforeDir="false" afterPath="$PROJECT_DIR$/prepare.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -239,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759542530034</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="ing">
+      <option name="closed" value="true" />
+      <created>1759572287400</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1759572287400</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

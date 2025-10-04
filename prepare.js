@@ -176,5 +176,5 @@ document.getElementById('start-game-btn').addEventListener('click', function() {
     const scriptId = urlParams.get('id');
 
     // 跳转到game.html，同时传递剧本id和角色id
-    window.location.href = `game.html?sid=${scriptId}&cid=${selectedCharacter}`;
+    window.location.href = `game.html?id=${scriptId}&cid=${selectedCharacter}`;
 });

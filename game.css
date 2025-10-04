@@ -16,13 +16,13 @@ body {
 
 .game-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1fr 1fr 2fr 1fr;
     grid-template-areas:
-        "player-info all-characters"
-        "process-history process-content"
-        "clues-area process-content"
-        "action-log process-control";
+        "player-info process-content all-characters"
+        "process-history process-content clues-area"
+        "process-history action-log clues-area"
+        "process-control process-control process-control";
     gap: 10px;
     padding: 10px;
     height: 100vh;
@@ -43,8 +43,10 @@ section {
 .player-info {
     grid-area: player-info;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
+    text-align: center;
 }
 
 .player-avatar {
@@ -53,6 +55,7 @@ section {
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid #6a11cb;
+    margin-bottom: 10px;
 }
 
 .player-avatar img {
@@ -62,7 +65,7 @@ section {
 }
 
 .player-name {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: white;
 }
@@ -80,22 +83,28 @@ section {
 
 .characters-list {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 10px;
 }
 
 .character-item {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    width: 70px;
+    gap: 10px;
     position: relative;
     cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.character-item:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .character-avatar-small {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.3);
@@ -108,28 +117,29 @@ section {
 }
 
 .character-name-small {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: white;
-    margin-top: 5px;
-    text-align: center;
 }
 
+/* 优化角色tooltip显示 */
 .character-tooltip {
     position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+    background: rgba(0, 0, 0, 0.9);
     color: white;
-    padding: 8px;
+    padding: 10px;
     border-radius: 5px;
     width: 200px;
-    z-index: 10;
+    z-index: 100;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s;
     font-size: 0.85rem;
     line-height: 1.4;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .character-item:hover .character-tooltip {
@@ -234,6 +244,14 @@ section {
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.clue-items-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .clue-item-on-scene {
@@ -439,39 +457,48 @@ section {
 /* 响应式设计 */
 @media (max-width: 1024px) {
     .game-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto auto 2fr auto auto;
         grid-template-areas:
-            "player-info"
-            "all-characters"
-            "process-history"
-            "process-content"
-            "clues-area"
-            "action-log"
-            "process-control";
+            "player-info all-characters"
+            "process-history clues-area"
+            "process-content process-content"
+            "action-log action-log"
+            "process-control process-control";
         height: auto;
         min-height: 100vh;
     }
 
-    .characters-list {
-        justify-content: center;
+    .character-item {
+        flex-direction: column;
+        text-align: center;
     }
+
+    .character-tooltip {
+        width: 180px;
+        font-size: 0.8rem;
+    }
+
 }
 
 @media (max-width: 768px) {
     .game-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto 2fr auto auto;
+        grid-template-areas:
+            "player-info"
+            "all-characters"
+            "process-history"
+            "clues-area"
+            "process-content"
+            "action-log"
+            "process-control";
         gap: 8px;
         padding: 8px;
     }
 
     section {
         padding: 10px;
-    }
-
-    .player-info {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
     }
 
     .player-avatar {
@@ -495,4 +522,19 @@ section {
         width: 50px;
         height: 50px;
     }
+
+    .character-item {
+        flex-direction: row;
+        text-align: left;
+    }
+}
+
+/* 添加可点击的流程历史项样式 */
+.history-item.clickable {
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.history-item.clickable:hover {
+    background: rgba(106, 17, 203, 0.2);
 }

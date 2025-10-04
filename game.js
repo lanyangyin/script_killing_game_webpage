@@ -9,12 +9,14 @@ let actionLog = [];
 let voteAnswers = {};
 let choiceAnswer = null;
 let truthContent = null;
+let isShowingTruth = false;
+let processHistory = []; // 用于存储已完成的流程
 
 // DOM 加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
     // 获取URL参数中的剧本ID和角色ID
     const urlParams = new URLSearchParams(window.location.search);
-    scriptId = urlParams.get('sid');
+    scriptId = urlParams.get('id');
     characterId = urlParams.get('cid');
 
     if (scriptId && characterId) {
@@ -38,6 +40,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 设置流程控制按钮事件
     document.getElementById('next-process-btn').addEventListener('click', nextProcess);
+
+    // 点击模态框外部关闭
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('clue-modal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // 监听窗口大小变化，重新定位线索物品
+    window.addEventListener('resize', function() {
+        if (processData && processData.data[currentProcessIndex] &&
+            processData.data[currentProcessIndex].type === 'clue') {
+            repositionClueItems();
+        }
+    });
 });
 
 // 初始化游戏
@@ -137,6 +155,10 @@ async function loadTruthContent() {
 
 // 显示当前流程
 function showCurrentProcess() {
+    if (isShowingTruth) {
+        return;
+    }
+
     if (currentProcessIndex >= processData.data.length) {
         // 所有流程已完成，显示真相
         showTruth();
@@ -149,7 +171,7 @@ function showCurrentProcess() {
     addActionLog(`进入${currentProcess.name}`);
 
     // 更新流程历史
-    updateProcessHistory();
+    addToProcessHistory(currentProcess);
 
     // 根据流程类型显示不同内容
     switch (currentProcess.type) {
@@ -168,17 +190,78 @@ function showCurrentProcess() {
     }
 }
 
+// 添加到流程历史
+function addToProcessHistory(process) {
+    processHistory.push({
+        name: process.name,
+        type: process.type,
+        index: currentProcessIndex
+    });
+
+    updateProcessHistory();
+}
+
 // 更新流程历史
 function updateProcessHistory() {
     const historyList = document.getElementById('history-list');
     historyList.innerHTML = '';
 
-    processData.data.forEach((process, index) => {
+    processHistory.forEach((process, index) => {
         const historyItem = document.createElement('div');
-        historyItem.className = `history-item ${index === currentProcessIndex ? 'current' : ''}`;
+        historyItem.className = `history-item ${index === processHistory.length - 1 ? 'current' : ''}`;
         historyItem.textContent = `${process.name} (${process.type})`;
+
+        // 为plot流程添加点击事件
+        if (process.type === 'plot') {
+            historyItem.classList.add('clickable');
+            historyItem.dataset.processIndex = process.index;
+            historyItem.addEventListener('click', function() {
+                replayPlotProcess(this.dataset.processIndex);
+            });
+        }
+
         historyList.appendChild(historyItem);
     });
+
+    // 滚动到底部
+    historyList.scrollTop = historyList.scrollHeight;
+}
+
+// 重新观看plot流程
+async function replayPlotProcess(processIndex) {
+    try {
+        const process = processData.data[processIndex];
+
+        // 加载剧情文本
+        let plotPath = `${scriptId}/${characterId}/plot/${process.name}.txt`;
+
+        // 检查是否是choice后的plot流程
+        if (processIndex > 0) {
+            const previousProcess = processData.data[processIndex - 1];
+            if (previousProcess.type === 'choice') {
+                // 这里我们无法知道当时的选择，所以显示默认文本
+                // 在实际应用中，可能需要存储用户的选择
+                plotPath = `${scriptId}/${characterId}/plot/${process.name}.txt`;
+            }
+        }
+
+        const response = await fetch(plotPath);
+        const plotText = await response.text();
+
+        // 显示剧情内容
+        document.getElementById('content-container').innerHTML = `
+            <div class="plot-text">${plotText}</div>
+        `;
+
+        // 记录操作日志
+        addActionLog(`重新观看: ${process.name}`);
+
+    } catch (error) {
+        console.error('重新加载剧情失败:', error);
+        document.getElementById('content-container').innerHTML = `
+            <div class="plot-text">剧情内容加载失败。</div>
+        `;
+    }
 }
 
 // 显示剧情流程
@@ -187,10 +270,15 @@ async function showPlotProcess(process) {
         // 加载剧情文本
         let plotPath = `${scriptId}/${characterId}/plot/${process.name}.txt`;
 
-        // 如果是选择后的剧情，使用选择的结果
-        if (choiceAnswer && process.name === processData.data[currentProcessIndex - 1]?.name) {
-            plotPath = `${scriptId}/${characterId}/plot/${process.name}/${choiceAnswer}.txt`;
-            choiceAnswer = null; // 重置选择
+        // 检查上一个流程是否为choice流程
+        if (currentProcessIndex > 0) {
+            const previousProcess = processData.data[currentProcessIndex - 1];
+            if (previousProcess.type === 'choice' && choiceAnswer) {
+                // 使用choice流程中选择的选项对应的文本
+                plotPath = `${scriptId}/${characterId}/plot/${process.name}/${choiceAnswer}.txt`;
+                // 重置choiceAnswer，避免影响后续流程
+                choiceAnswer = null;
+            }
         }
 
         const response = await fetch(plotPath);
@@ -263,6 +351,11 @@ async function showVoteProcess(process) {
                 // 记录答案
                 voteAnswers[qIndex] = oIndex;
 
+                // 记录操作日志
+                const questionText = document.querySelectorAll('.vote-question')[qIndex].textContent;
+                const selectedOption = this.textContent;
+                addActionLog(`投票选择: ${questionText} -> ${selectedOption}`);
+
                 // 检查是否所有问题都已回答
                 checkVoteCompletion();
             });
@@ -281,11 +374,7 @@ async function showVoteProcess(process) {
 
 // 检查投票是否完成
 function checkVoteCompletion() {
-    const voteDataLength = JSON.parse(
-        document.querySelector('.vote-container').innerHTML.includes('vote-question') ?
-        document.querySelectorAll('.vote-question').length : 0
-    );
-
+    const voteDataLength = document.querySelectorAll('.vote-question').length;
     const nextButton = document.getElementById('next-process-btn');
 
     if (Object.keys(voteAnswers).length === voteDataLength) {
@@ -316,7 +405,7 @@ async function showChoiceProcess(process) {
 
             options.forEach((option, index) => {
                 choiceHTML += `
-                    <div class="choice-option" data-goto="${option.go_to_the_scene}">
+                    <div class="choice-option" data-goto="${option.go_to_the_scene}" data-index="${option.index}">
                         ${option.index}
                     </div>
                 `;
@@ -342,6 +431,11 @@ async function showChoiceProcess(process) {
 
                 // 记录答案
                 choiceAnswer = this.dataset.goto;
+
+                // 记录操作日志
+                const choiceTitle = document.querySelector('.choice-title').textContent;
+                const selectedOption = this.dataset.index;
+                addActionLog(`抉择选择: ${choiceTitle} -> ${selectedOption}`);
 
                 // 更新按钮
                 updateNextButton();
@@ -370,6 +464,7 @@ async function showClueProcess(process) {
         let clueHTML = `
             <div class="clue-scene">
                 <img class="scene-background" src="${scriptId}/${characterId}/clue/${process.name}/background.png" alt="场景背景">
+                <div class="clue-items-container"></div>
             </div>
         `;
 
@@ -378,39 +473,12 @@ async function showClueProcess(process) {
         // 添加线索物品到场景
         const sceneElement = document.querySelector('.clue-scene');
         const backgroundImg = document.querySelector('.scene-background');
+        const clueItemsContainer = document.querySelector('.clue-items-container');
 
         // 等待图片加载完成
         backgroundImg.onload = function() {
-            Object.keys(cluesData).forEach((itemName, index) => {
-                // 计算随机位置
-                const maxX = backgroundImg.offsetWidth - 60;
-                const maxY = backgroundImg.offsetHeight - 60;
-                const randomX = Math.floor(Math.random() * maxX);
-                const randomY = Math.floor(Math.random() * maxY);
-
-                // 创建线索物品
-                const clueItem = document.createElement('div');
-                clueItem.className = 'clue-item-on-scene';
-                clueItem.style.left = `${randomX}px`;
-                clueItem.style.top = `${randomY}px`;
-                clueItem.dataset.itemName = itemName;
-                clueItem.dataset.clues = JSON.stringify(cluesData[itemName]);
-
-                // 设置线索物品图标
-                clueItem.style.backgroundImage = `url('${scriptId}/${characterId}/clue/${process.name}/${itemName}/iconic.png')`;
-                clueItem.style.backgroundSize = 'cover';
-
-                // 显示剩余线索数
-                const remainingClues = cluesData[itemName].length;
-                clueItem.innerHTML = `<div class="clue-item-count">${remainingClues}</div>`;
-
-                // 添加点击事件
-                clueItem.addEventListener('click', function() {
-                    showClueDetails(this);
-                });
-
-                sceneElement.appendChild(clueItem);
-            });
+            // 放置线索物品
+            placeClueItems(clueItemsContainer, cluesData, sceneElement, backgroundImg);
         };
 
         // 更新按钮
@@ -422,6 +490,92 @@ async function showClueProcess(process) {
             <div class="plot-text">线索内容加载失败。</div>
         `;
     }
+}
+
+// 放置线索物品
+function placeClueItems(container, cluesData, sceneElement, backgroundImg) {
+    container.innerHTML = '';
+
+    // 获取场景图片的尺寸
+    const sceneWidth = sceneElement.offsetWidth;
+    const sceneHeight = sceneElement.offsetHeight;
+
+    // 线索物品尺寸
+    const clueItemSize = Math.min(60, sceneWidth * 0.08, sceneHeight * 0.08);
+
+    // 确保线索物品不会超出场景边界
+    const maxX = sceneWidth - clueItemSize - 10; // 减去边距
+    const maxY = sceneHeight - clueItemSize - 10;
+
+    Object.keys(cluesData).forEach((itemName, index) => {
+        // 计算随机位置，确保在场景范围内
+        const randomX = Math.max(10, Math.min(maxX, Math.floor(Math.random() * maxX)));
+        const randomY = Math.max(10, Math.min(maxY, Math.floor(Math.random() * maxY)));
+
+        // 创建线索物品
+        const clueItem = document.createElement('div');
+        clueItem.className = 'clue-item-on-scene';
+        clueItem.style.width = `${clueItemSize}px`;
+        clueItem.style.height = `${clueItemSize}px`;
+        clueItem.style.left = `${randomX}px`;
+        clueItem.style.top = `${randomY}px`;
+        clueItem.dataset.itemName = itemName;
+        clueItem.dataset.clues = JSON.stringify(cluesData[itemName]);
+
+        // 设置线索物品图标
+        clueItem.style.backgroundImage = `url('${scriptId}/${characterId}/clue/${processData.data[currentProcessIndex].name}/${itemName}/iconic.png')`;
+        clueItem.style.backgroundSize = 'cover';
+
+        // 显示剩余线索数
+        const remainingClues = cluesData[itemName].length;
+        clueItem.innerHTML = `<div class="clue-item-count">${remainingClues}</div>`;
+
+        // 添加点击事件
+        clueItem.addEventListener('click', function() {
+            showClueDetails(this);
+        });
+
+        container.appendChild(clueItem);
+    });
+}
+
+// 重新定位线索物品
+function repositionClueItems() {
+    const sceneElement = document.querySelector('.clue-scene');
+    const backgroundImg = document.querySelector('.scene-background');
+    const clueItemsContainer = document.querySelector('.clue-items-container');
+
+    if (!sceneElement || !clueItemsContainer) return;
+
+    // 获取所有线索物品
+    const clueItems = document.querySelectorAll('.clue-item-on-scene');
+
+    // 获取场景图片的尺寸
+    const sceneWidth = sceneElement.offsetWidth;
+    const sceneHeight = sceneElement.offsetHeight;
+
+    // 线索物品尺寸
+    const clueItemSize = Math.min(60, sceneWidth * 0.08, sceneHeight * 0.08);
+
+    // 确保线索物品不会超出场景边界
+    const maxX = sceneWidth - clueItemSize - 10; // 减去边距
+    const maxY = sceneHeight - clueItemSize - 10;
+
+    clueItems.forEach(item => {
+        // 获取当前相对位置
+        const currentX = parseInt(item.style.left);
+        const currentY = parseInt(item.style.top);
+
+        // 计算新的相对位置（保持相对比例）
+        const newX = Math.max(10, Math.min(maxX, (currentX / sceneWidth) * maxX));
+        const newY = Math.max(10, Math.min(maxY, (currentY / sceneHeight) * maxY));
+
+        // 更新位置和尺寸
+        item.style.width = `${clueItemSize}px`;
+        item.style.height = `${clueItemSize}px`;
+        item.style.left = `${newX}px`;
+        item.style.top = `${newY}px`;
+    });
 }
 
 // 显示线索详情
@@ -442,8 +596,13 @@ function showClueDetails(clueItem) {
         // 显示线索模态框
         document.getElementById('clue-modal-title').textContent = `${itemName} - ${clueKey}`;
         document.getElementById('clue-modal-text').textContent = clueValue;
-        document.getElementById('clue-modal-image').src =
-            `${scriptId}/${characterId}/clue/${processData.data[currentProcessIndex].name}/${itemName}/${clueKey}.png`;
+
+        // 尝试加载线索图片，如果失败则使用默认图片
+        const clueImage = document.getElementById('clue-modal-image');
+        clueImage.src = `${scriptId}/${characterId}/clue/${processData.data[currentProcessIndex].name}/${itemName}/${clueKey}.png`;
+        clueImage.onerror = function() {
+            this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7mnKrlm77niYc8L3RleHQ+PC9zdmc+';
+        };
 
         document.getElementById('clue-modal').style.display = 'block';
 
@@ -460,6 +619,12 @@ function showClueDetails(clueItem) {
         // 更新线索物品上的数字
         const remainingClues = clues.length - collectedClues.filter(c => c.item === itemName).length;
         clueItem.querySelector('.clue-item-count').textContent = remainingClues;
+
+        // 如果该物品的所有线索都已收集，禁用该物品
+        if (remainingClues === 0) {
+            clueItem.style.opacity = '0.5';
+            clueItem.style.pointerEvents = 'none';
+        }
 
         // 检查是否所有线索都已收集
         checkCluesCompletion();
@@ -482,13 +647,21 @@ function updateCluesList() {
             // 点击线索可以再次查看详情
             document.getElementById('clue-modal-title').textContent = `${clue.item} - ${clue.clue}`;
             document.getElementById('clue-modal-text').textContent = clue.value;
-            document.getElementById('clue-modal-image').src =
-                `${scriptId}/${characterId}/clue/${processData.data[currentProcessIndex].name}/${clue.item}/${clue.clue}.png`;
+
+            const clueImage = document.getElementById('clue-modal-image');
+            clueImage.src = `${scriptId}/${characterId}/clue/${processData.data[currentProcessIndex].name}/${clue.item}/${clue.clue}.png`;
+            clueImage.onerror = function() {
+                this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7mnKrlm77niYc8L3RleHQ+PC9zdmc+';
+            };
+
             document.getElementById('clue-modal').style.display = 'block';
         });
 
         cluesList.appendChild(clueItem);
     });
+
+    // 滚动到底部
+    cluesList.scrollTop = cluesList.scrollHeight;
 }
 
 // 检查线索是否全部收集
@@ -528,6 +701,7 @@ function checkCluesCompletion() {
 
 // 显示真相
 function showTruth() {
+    isShowingTruth = true;
     document.getElementById('content-container').innerHTML = `
         <div class="truth-content">${truthContent}</div>
     `;
@@ -552,14 +726,19 @@ function updateNextButton() {
             nextButton.disabled = false;
             break;
         case 'vote':
-            nextButton.disabled = Object.keys(voteAnswers).length <
-                document.querySelectorAll('.vote-question').length;
+            const voteQuestions = document.querySelectorAll('.vote-question');
+            nextButton.disabled = Object.keys(voteAnswers).length < voteQuestions.length;
             break;
         case 'choice':
             nextButton.disabled = !choiceAnswer;
             break;
         case 'clue':
             // 在checkCluesCompletion中处理
+            // 初始状态下禁用按钮
+            if (!nextButton.disabled) {
+                nextButton.disabled = true;
+                nextButton.textContent = '未完成';
+            }
             break;
     }
 
@@ -568,6 +747,10 @@ function updateNextButton() {
 
 // 获取下一步按钮文本
 function getNextButtonText() {
+    if (isShowingTruth) {
+        return '返回首页';
+    }
+
     if (currentProcessIndex >= processData.data.length - 1) {
         return '查看真相';
     } else {
@@ -580,12 +763,16 @@ function getNextButtonText() {
 function nextProcess() {
     const nextButton = document.getElementById('next-process-btn');
 
+    // 如果当前是真相页面，返回首页
+    if (isShowingTruth) {
+        window.location.href = 'index.html';
+        return;
+    }
+
     // 如果当前是最后一个流程，显示真相
     if (currentProcessIndex >= processData.data.length - 1) {
         if (nextButton.textContent === '查看真相') {
             showTruth();
-        } else if (nextButton.textContent === '返回首页') {
-            window.location.href = 'index.html';
         }
         return;
     }
