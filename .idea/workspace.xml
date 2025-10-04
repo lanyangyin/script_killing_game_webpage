@@ -5,9 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6819c957-037c-4b52-9582-c28a7dd2abbc" name="更改" comment="ing">
-      <change afterPath="$PROJECT_DIR$/0/c2/process.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/iconic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/线索1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/线索2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/iconic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/线索a.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/线索b.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/0/c1/choice/choice1.json" beforeDir="false" afterPath="$PROJECT_DIR$/0/c1/choice/choice1.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/clues.json" beforeDir="false" afterPath="$PROJECT_DIR$/0/c1/clue/scene1/clues.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/0/c1/vote/vote1.json" beforeDir="false" afterPath="$PROJECT_DIR$/0/c1/vote/vote1.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/game.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.html" beforeDir="false" afterPath="$PROJECT_DIR$/game.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prepare.html" beforeDir="false" afterPath="$PROJECT_DIR$/prepare.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prepare.js" beforeDir="false" afterPath="$PROJECT_DIR$/prepare.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,28 +54,30 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/Documents/html/script_killing_game_webpage/0/c2",
+    "last_opened_file_path": "D:/Documents/html/script_killing_game_webpage/0/c1/clue/scene1/物品1",
     "settings.editor.selected.configurable": "flutter.settings",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1\物品1" />
+      <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1\物品2" />
+      <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1" />
       <recent name="D:\Documents\html\script_killing_game_webpage\0\c2" />
       <recent name="D:\Documents\html\script_killing_game_webpage\script\0\plot\character1" />
-      <recent name="D:\Documents\html\script_killing_game_webpage\script\0" />
-      <recent name="D:\Documents\html\script_killing_game_webpage" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1\物品2" />
+      <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1\物品1" />
       <recent name="D:\Documents\html\script_killing_game_webpage" />
       <recent name="D:\Documents\html\script_killing_game_webpage\script\0\character1" />
       <recent name="D:\Documents\html\script_killing_game_webpage\script\0\character1\plot\choice1章节" />
-      <recent name="D:\Documents\html\script_killing_game_webpage\script\0" />
-      <recent name="D:\Documents\html\script_killing_game_webpage\script\0\character\character1" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -210,7 +223,23 @@
       <option name="project" value="LOCAL" />
       <updated>1759507588288</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="ing">
+      <option name="closed" value="true" />
+      <created>1759542494245</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1759542494245</updated>
+    </task>
+    <task id="LOCAL-00018" summary="ing">
+      <option name="closed" value="true" />
+      <created>1759542530034</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1759542530034</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -3,621 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>剧本杀游戏 - 神秘庄园</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Microsoft YaHei', sans-serif;
-        }
-
-        body {
-            background-color: #1a1a2e;
-            color: #e6e6e6;
-            line-height: 1.6;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            grid-template-rows: 1fr 2fr 1fr;
-            gap: 15px;
-            height: 100vh;
-            padding: 15px;
-        }
-
-        /* 左上角 - 玩家角色区域 */
-        .player-area {
-            grid-column: 1;
-            grid-row: 1;
-            background-color: #16213e;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .player-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid #0f3460;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-
-        .player-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .player-name {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #e94560;
-            text-align: center;
-        }
-
-        /* 右上角 - 角色列表 */
-        .characters-area {
-            grid-column: 3;
-            grid-row: 1;
-            background-color: #16213e;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .characters-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #e94560;
-            text-align: center;
-        }
-
-        .characters-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .character-item {
-            width: 70px;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .character-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 2px solid #0f3460;
-            margin: 0 auto 5px;
-            overflow: hidden;
-        }
-
-        .character-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .character-name {
-            font-size: 0.8rem;
-            color: #e6e6e6;
-        }
-
-        .character-tooltip {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px;
-            border-radius: 5px;
-            width: 200px;
-            font-size: 0.9rem;
-            z-index: 10;
-            display: none;
-        }
-
-        .character-item:hover .character-tooltip {
-            display: block;
-        }
-
-        /* 中间 - 剧本内容 */
-        .script-area {
-            grid-column: 2;
-            grid-row: 1 / span 2;
-            background-color: #16213e;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .script-title {
-            font-size: 1.5rem;
-            color: #e94560;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .script-content {
-            flex-grow: 1;
-            padding: 15px;
-            background-color: #0f3460;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            overflow-y: auto;
-        }
-
-        .script-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .choices {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .choice-btn {
-            background-color: #1a1a2e;
-            color: #e6e6e6;
-            border: 1px solid #e94560;
-            border-radius: 5px;
-            padding: 8px 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .choice-btn:hover {
-            background-color: #e94560;
-        }
-
-        .next-btn {
-            background-color: #e94560;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            align-self: flex-end;
-            transition: all 0.3s;
-        }
-
-        .next-btn:hover {
-            background-color: #ff6b81;
-        }
-
-        /* 左下角 - 章节导航 */
-        .chapters-area {
-            grid-column: 1;
-            grid-row: 2 / span 2;
-            background-color: #16213e;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-        }
-
-        .chapters-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #e94560;
-            text-align: center;
-        }
-
-        .chapters-list {
-            list-style-type: none;
-        }
-
-        .chapter-item {
-            padding: 8px 10px;
-            margin-bottom: 5px;
-            background-color: #0f3460;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .chapter-item:hover {
-            background-color: #1a4a7a;
-        }
-
-        .chapter-item.active {
-            background-color: #e94560;
-        }
-
-        /* 右下角 - 线索区域 */
-        .clues-area {
-            grid-column: 3;
-            grid-row: 2 / span 2;
-            background-color: #16213e;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .clues-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #e94560;
-            text-align: center;
-        }
-
-        .clues-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            background-color: #0f3460;
-            border-radius: 8px;
-            padding: 10px;
-        }
-
-        .clue-item {
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #1a1a2e;
-            border-radius: 5px;
-            border-left: 3px solid #e94560;
-        }
-
-        .clue-item.hidden {
-            opacity: 0.3;
-        }
-
-        /* 中间下方 - 历史问答 */
-        .history-area {
-            grid-column: 2;
-            grid-row: 3;
-            background-color: #16213e;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-        }
-
-        .history-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #e94560;
-            text-align: center;
-        }
-
-        .history-content {
-            background-color: #0f3460;
-            border-radius: 8px;
-            padding: 10px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            padding: 5px 0;
-            border-bottom: 1px solid #1a1a2e;
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 1200px) {
-            .container {
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto auto auto auto;
-            }
-
-            .player-area { grid-column: 1; grid-row: 1; }
-            .characters-area { grid-column: 2; grid-row: 1; }
-            .script-area { grid-column: 1 / span 2; grid-row: 2; }
-            .chapters-area { grid-column: 1; grid-row: 3; }
-            .clues-area { grid-column: 2; grid-row: 3; }
-            .history-area { grid-column: 1 / span 2; grid-row: 4; }
-        }
-    </style>
+    <title>剧本杀游戏 - 剧本杀收藏馆</title>
+    <link rel="stylesheet" href="game.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <!-- 左上角 - 玩家角色区域 -->
-        <div class="player-area">
+    <div class="game-container">
+        <!-- 左上：玩家角色信息 -->
+        <section class="player-info">
             <div class="player-avatar">
-                <img id="player-avatar-img" src="" alt="玩家角色头像">
+                <img id="player-avatar" src="" alt="玩家头像">
             </div>
-            <div class="player-name" id="player-name">未知角色</div>
-        </div>
+            <div class="player-name" id="player-name">加载中...</div>
+        </section>
 
-        <!-- 右上角 - 角色列表 -->
-        <div class="characters-area">
-            <div class="characters-title">角色列表</div>
+        <!-- 右上：所有角色信息 -->
+        <section class="all-characters">
+            <h3>所有角色</h3>
             <div class="characters-list" id="characters-list">
                 <!-- 角色将通过JavaScript动态加载 -->
             </div>
-        </div>
+        </section>
 
-        <!-- 中间 - 剧本内容 -->
-        <div class="script-area">
-            <div class="script-title" id="chapter-title">第一章：神秘庄园</div>
-            <div class="script-content" id="script-content">
-                <p>你醒来发现自己身处一个陌生的房间，四周是古老的木质家具...</p>
-                <!-- 剧本内容将通过JavaScript动态加载 -->
+        <!-- 左下：流程历史 -->
+        <section class="process-history">
+            <h3>流程历史</h3>
+            <div class="history-list" id="history-list">
+                <!-- 历史流程将通过JavaScript动态加载 -->
             </div>
-            <div class="script-actions">
-                <div class="choices" id="choices-container">
-                    <!-- 选择按钮将通过JavaScript动态加载 -->
-                </div>
-                <button class="next-btn" id="next-btn">下一步</button>
-            </div>
-        </div>
+        </section>
 
-        <!-- 左下角 - 章节导航 -->
-        <div class="chapters-area">
-            <div class="chapters-title">章节导航</div>
-            <ul class="chapters-list" id="chapters-list">
-                <!-- 章节将通过JavaScript动态加载 -->
-            </ul>
-        </div>
-
-        <!-- 右下角 - 线索区域 -->
-        <div class="clues-area">
-            <div class="clues-title">线索收集</div>
+        <!-- 右下：线索区域 -->
+        <section class="clues-area">
+            <h3>已获得线索</h3>
             <div class="clues-list" id="clues-list">
                 <!-- 线索将通过JavaScript动态加载 -->
             </div>
-        </div>
+        </section>
 
-        <!-- 中间下方 - 历史问答 -->
-        <div class="history-area">
-            <div class="history-title">历史问答</div>
-            <div class="history-content" id="history-content">
-                <!-- 历史问答将通过JavaScript动态加载 -->
+        <!-- 中间上方：流程内容 -->
+        <section class="process-content">
+            <div class="content-container" id="content-container">
+                <!-- 流程内容将通过JavaScript动态加载 -->
+            </div>
+        </section>
+
+        <!-- 中间下方：操作记录 -->
+        <section class="action-log">
+            <h3>操作记录</h3>
+            <div class="log-list" id="log-list">
+                <!-- 操作记录将通过JavaScript动态加载 -->
+            </div>
+        </section>
+
+        <!-- 底部：流程控制按钮 -->
+        <section class="process-control">
+            <button id="next-process-btn">加载中...</button>
+        </section>
+
+        <!-- 线索详情模态框 -->
+        <div class="modal" id="clue-modal">
+            <div class="modal-content">
+                <span class="close" id="close-modal">&times;</span>
+                <div class="clue-image-container">
+                    <img id="clue-modal-image" src="" alt="线索图片">
+                </div>
+                <div class="clue-text-container">
+                    <h4 id="clue-modal-title">线索标题</h4>
+                    <p id="clue-modal-text">线索内容</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // 从URL参数获取角色信息
-        function getUrlParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return {
-                character: urlParams.get('character') || '侦探'
-            };
-        }
-
-        // 游戏数据
-        const gameData = {
-            characters: [
-                { name: '侦探', description: '一位经验丰富的侦探，擅长观察细节和逻辑推理。' },
-                { name: '医生', description: '冷静理性的医生，对医学和毒物有深入了解。' },
-                { name: '律师', description: '能言善辩的律师，擅长发现逻辑漏洞。' },
-                { name: '记者', description: '好奇心强的记者，掌握各种情报来源。' },
-                { name: '管家', description: '熟悉庄园每个角落的管家，知道许多秘密。' },
-                { name: '富豪', description: '庄园的主人，掌握着巨大财富和权力。' }
-            ],
-            chapters: [
-                { id: 1, title: '第一章：神秘庄园', content: '你醒来发现自己身处一个陌生的房间，四周是古老的木质家具。窗外是浓雾笼罩的庄园，你听到楼下传来争吵声...' },
-                { id: 2, title: '第二章：晚宴风波', content: '晚餐时，富豪突然倒地不起，所有人都惊慌失措。你注意到桌上的红酒有些异常...' },
-                { id: 3, title: '第三章：线索收集', content: '你开始调查现场，发现了一些可疑的线索。有人似乎在刻意隐瞒什么...' }
-            ],
-            clues: [
-                { id: 1, title: '红酒瓶', content: '在餐桌下发现的红酒瓶，瓶底有少量白色沉淀物。', chapter: 2 },
-                { id: 2, title: '匿名信', content: '在书房发现的匿名信，警告富豪小心身边的人。', chapter: 1 },
-                { id: 3, title: '医疗记录', content: '在医生房间发现的医疗记录，显示富豪有严重的心脏问题。', chapter: 3 },
-                { id: 4, title: '财务文件', content: '律师公文包中的财务文件，显示富豪正在修改遗嘱。', chapter: 3 }
-            ],
-            currentChapter: 1,
-            revealedClues: [1, 2],
-            history: [
-                { question: '你认为谁最有嫌疑？', answer: '管家' },
-                { question: '富豪倒地时你在做什么？', answer: '观察每个人的反应' }
-            ]
-        };
-
-        // 初始化游戏
-        function initGame() {
-            const params = getUrlParams();
-            const playerCharacter = params.character;
-
-            // 设置玩家角色
-            document.getElementById('player-name').textContent = playerCharacter;
-            document.getElementById('player-avatar-img').src = `/character/${playerCharacter}.webp`;
-
-            // 加载角色列表
-            loadCharacters();
-
-            // 加载章节
-            loadChapters();
-
-            // 加载线索
-            loadClues();
-
-            // 加载当前章节内容
-            loadCurrentChapter();
-
-            // 加载历史问答
-            loadHistory();
-
-            // 设置下一步按钮事件
-            document.getElementById('next-btn').addEventListener('click', nextStep);
-        }
-
-        // 加载角色列表
-        function loadCharacters() {
-            const charactersList = document.getElementById('characters-list');
-            charactersList.innerHTML = '';
-
-            gameData.characters.forEach(character => {
-                const characterItem = document.createElement('div');
-                characterItem.className = 'character-item';
-
-                characterItem.innerHTML = `
-                    <div class="character-avatar">
-                        <img src="/character/${character.name}.webp" alt="${character.name}">
-                    </div>
-                    <div class="character-name">${character.name}</div>
-                    <div class="character-tooltip">${character.description}</div>
-                `;
-
-                charactersList.appendChild(characterItem);
-            });
-        }
-
-        // 加载章节导航
-        function loadChapters() {
-            const chaptersList = document.getElementById('chapters-list');
-            chaptersList.innerHTML = '';
-
-            gameData.chapters.forEach(chapter => {
-                const chapterItem = document.createElement('li');
-                chapterItem.className = `chapter-item ${chapter.id === gameData.currentChapter ? 'active' : ''}`;
-                chapterItem.textContent = chapter.title;
-                chapterItem.addEventListener('click', () => {
-                    // 切换章节逻辑
-                    if (chapter.id <= gameData.currentChapter) {
-                        gameData.currentChapter = chapter.id;
-                        loadCurrentChapter();
-                        loadChapters();
-                    }
-                });
-
-                chaptersList.appendChild(chapterItem);
-            });
-        }
-
-        // 加载当前章节内容
-        function loadCurrentChapter() {
-            const currentChapter = gameData.chapters.find(c => c.id === gameData.currentChapter);
-
-            if (currentChapter) {
-                document.getElementById('chapter-title').textContent = currentChapter.title;
-                document.getElementById('script-content').innerHTML = `<p>${currentChapter.content}</p>`;
-
-                // 根据章节显示不同的选择
-                const choicesContainer = document.getElementById('choices-container');
-                choicesContainer.innerHTML = '';
-
-                if (gameData.currentChapter === 1) {
-                    choicesContainer.innerHTML = `
-                        <button class="choice-btn">下楼查看争吵</button>
-                        <button class="choice-btn">在房间内搜索线索</button>
-                        <button class="choice-btn">从窗户观察外面情况</button>
-                    `;
-                } else if (gameData.currentChapter === 2) {
-                    choicesContainer.innerHTML = `
-                        <button class="choice-btn">检查富豪状况</button>
-                        <button class="choice-btn">询问在场人员</button>
-                        <button class="choice-btn">检查餐桌上的食物</button>
-                    `;
-                } else if (gameData.currentChapter === 3) {
-                    choicesContainer.innerHTML = `
-                        <button class="choice-btn">搜查书房</button>
-                        <button class="choice-btn">询问嫌疑人</button>
-                        <button class="choice-btn">分析已有线索</button>
-                    `;
-                }
-
-                // 为选择按钮添加事件
-                document.querySelectorAll('.choice-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const question = `在${currentChapter.title}中，你选择了：${this.textContent}`;
-                        const answer = this.textContent;
-
-                        // 添加到历史
-                        gameData.history.push({ question, answer });
-                        loadHistory();
-
-                        // 显示选择结果
-                        const result = document.createElement('p');
-                        result.textContent = `你选择了：${this.textContent}`;
-                        result.style.marginTop = '10px';
-                        result.style.fontStyle = 'italic';
-                        document.getElementById('script-content').appendChild(result);
-                    });
-                });
-            }
-        }
-
-        // 加载线索
-        function loadClues() {
-            const cluesList = document.getElementById('clues-list');
-            cluesList.innerHTML = '';
-
-            gameData.clues.forEach(clue => {
-                const clueItem = document.createElement('div');
-                clueItem.className = `clue-item ${gameData.revealedClues.includes(clue.id) ? '' : 'hidden'}`;
-
-                clueItem.innerHTML = `
-                    <strong>${clue.title}</strong>
-                    <p>${clue.content}</p>
-                `;
-
-                cluesList.appendChild(clueItem);
-            });
-        }
-
-        // 加载历史问答
-        function loadHistory() {
-            const historyContent = document.getElementById('history-content');
-            historyContent.innerHTML = '';
-
-            gameData.history.forEach(item => {
-                const historyItem = document.createElement('div');
-                historyItem.className = 'history-item';
-
-                historyItem.innerHTML = `
-                    <div><strong>问题：</strong>${item.question}</div>
-                    <div><strong>回答：</strong>${item.answer}</div>
-                `;
-
-                historyContent.appendChild(historyItem);
-            });
-        }
-
-        // 下一步逻辑
-        function nextStep() {
-            if (gameData.currentChapter < gameData.chapters.length) {
-                gameData.currentChapter++;
-
-                // 根据新章节解锁线索
-                if (gameData.currentChapter === 2) {
-                    gameData.revealedClues = [1, 2];
-                } else if (gameData.currentChapter === 3) {
-                    gameData.revealedClues = [1, 2, 3, 4];
-                }
-
-                loadCurrentChapter();
-                loadChapters();
-                loadClues();
-            } else {
-                // 游戏结束逻辑
-                document.getElementById('script-content').innerHTML = `
-                    <h3>游戏结束</h3>
-                    <p>恭喜你完成了剧本杀游戏！</p>
-                    <p>真凶是：律师</p>
-                    <p>动机：富豪修改遗嘱将大部分财产捐给慈善机构，律师因此失去大笔佣金。</p>
-                `;
-
-                document.getElementById('next-btn').style.display = 'none';
-                document.getElementById('choices-container').innerHTML = '';
-            }
-        }
-
-        // 页面加载完成后初始化游戏
-        window.addEventListener('DOMContentLoaded', initGame);
-    </script>
+    <script src="game.js"></script>
 </body>
 </html>

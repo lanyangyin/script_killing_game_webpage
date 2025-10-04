@@ -1,11 +1,11 @@
 {
-  "data": [
+  "这里是抉择标题": [
     {
-      "problem": "抉择一",
+      "index": "抉择一",
       "go_to_the_scene": "choice1章节0"
     },
     {
-      "problem": "抉择二",
+      "index": "抉择二",
       "go_to_the_scene": "choice1章节1"
     }
   ]

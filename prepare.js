@@ -171,9 +171,10 @@ document.getElementById('start-game-btn').addEventListener('click', function() {
         return;
     }
 
-    // 这里可以添加开始游戏的逻辑
-    alert(`开始游戏！您选择的角色ID是: ${selectedCharacter}`);
+    // 获取剧本id
+    const urlParams = new URLSearchParams(window.location.search);
+    const scriptId = urlParams.get('id');
 
-    // 在实际应用中，这里可能会跳转到游戏页面或执行其他操作
-    // window.location.href = `game.html?script=${scriptData.id}&character=${selectedCharacter}`;
+    // 跳转到game.html，同时传递剧本id和角色id
+    window.location.href = `game.html?sid=${scriptId}&cid=${selectedCharacter}`;
 });
