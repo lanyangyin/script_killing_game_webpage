@@ -26,6 +26,7 @@ body {
     gap: 10px;
     padding: 10px;
     height: 100vh;
+    overflow: hidden;
 }
 
 /* 区域样式 */
@@ -56,12 +57,13 @@ section {
     overflow: hidden;
     border: 3px solid #6a11cb;
     margin-bottom: 10px;
+    background-color: #333; /* 添加背景色以防图片加载失败 */
 }
 
 .player-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* 确保图片覆盖整个圆形区域 */
 }
 
 .player-name {
@@ -73,18 +75,23 @@ section {
 /* 所有角色区域 */
 .all-characters {
     grid-area: all-characters;
+    display: flex;
+    flex-direction: column;
 }
 
 .all-characters h3 {
     color: white;
     margin-bottom: 10px;
     font-size: 1.2rem;
+    flex-shrink: 0; /* 防止标题被压缩 */
 }
 
 .characters-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .character-item {
@@ -96,6 +103,7 @@ section {
     padding: 5px;
     border-radius: 5px;
     transition: background 0.3s;
+    min-height: 50px; /* 确保最小高度 */
 }
 
 .character-item:hover {
@@ -108,20 +116,26 @@ section {
     border-radius: 50%;
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.3);
+    background-color: #333; /* 添加背景色以防图片加载失败 */
+    flex-shrink: 0; /* 防止头像被压缩 */
 }
 
 .character-avatar-small img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* 确保图片覆盖整个圆形区域 */
 }
 
 .character-name-small {
     font-size: 0.9rem;
     color: white;
+    white-space: nowrap; /* 防止名字换行 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 名字过长时显示省略号 */
+    flex: 1;
+    min-width: 0; /* 允许文本溢出时显示省略号 */
 }
 
-/* 优化角色tooltip显示 */
 .character-tooltip {
     position: absolute;
     left: 100%;
@@ -177,6 +191,15 @@ section {
     font-weight: 500;
 }
 
+.history-item.clickable {
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.history-item.clickable:hover {
+    background: rgba(106, 17, 203, 0.2);
+}
+
 /* 线索区域 */
 .clues-area {
     grid-area: clues-area;
@@ -224,6 +247,7 @@ section {
     padding: 20px;
     color: white;
     text-align: center;
+    overflow: auto;
 }
 
 .plot-text {
@@ -393,6 +417,7 @@ section {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
+    overflow: auto;
 }
 
 .modal-content {
@@ -454,7 +479,7 @@ section {
     line-height: 1.6;
 }
 
-/* 响应式设计 */
+/* 响应式设计 - 平板 */
 @media (max-width: 1024px) {
     .game-container {
         grid-template-columns: 1fr 1fr;
@@ -467,20 +492,29 @@ section {
             "process-control process-control";
         height: auto;
         min-height: 100vh;
+        overflow-y: auto; /* 允许垂直滚动 */
     }
 
     .character-item {
         flex-direction: column;
         text-align: center;
+        min-height: 70px; /* 增加最小高度以适应垂直布局 */
     }
 
     .character-tooltip {
-        width: 180px;
-        font-size: 0.8rem;
+        left: 50%;
+        top: 100%;
+        transform: translateX(-50%);
+        margin-left: 0;
+        margin-top: 10px;
     }
 
+    .character-name-small {
+        font-size: 0.8rem;
+    }
 }
 
+/* 响应式设计 - 手机 */
 @media (max-width: 768px) {
     .game-container {
         grid-template-columns: 1fr;
@@ -495,10 +529,14 @@ section {
             "process-control";
         gap: 8px;
         padding: 8px;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto; /* 允许垂直滚动 */
     }
 
     section {
         padding: 10px;
+        max-height: none; /* 移除最大高度限制 */
     }
 
     .player-avatar {
@@ -523,18 +561,179 @@ section {
         height: 50px;
     }
 
+    /* 角色区域在竖屏下使用水平滚动布局 */
+    .all-characters {
+        max-height: 150px; /* 限制高度 */
+    }
+
+    .characters-list {
+        flex-direction: row; /* 水平排列 */
+        overflow-x: auto; /* 水平滚动 */
+        overflow-y: hidden;
+        padding-bottom: 5px;
+    }
+
     .character-item {
-        flex-direction: row;
-        text-align: left;
+        flex-direction: column;
+        text-align: center;
+        min-width: 70px; /* 设置最小宽度 */
+        min-height: auto;
+        flex-shrink: 0; /* 防止被压缩 */
+    }
+
+    .character-avatar-small {
+        width: 50px;
+        height: 50px;
+    }
+
+    .character-name-small {
+        font-size: 0.7rem;
+        margin-top: 5px;
+    }
+
+    .character-tooltip {
+        left: 50%;
+        top: 100%;
+        transform: translateX(-50%);
+        margin-left: 0;
+        margin-top: 10px;
+        width: 150px;
+        font-size: 0.8rem;
+    }
+
+    /* 调整其他区域的高度限制 */
+    .process-history,
+    .clues-area,
+    .action-log {
+        max-height: 200px;
+    }
+
+    .process-content {
+        max-height: 400px;
     }
 }
 
-/* 添加可点击的流程历史项样式 */
-.history-item.clickable {
-    cursor: pointer;
-    transition: background 0.3s;
+/* 非常小的屏幕 */
+@media (max-width: 480px) {
+    .game-container {
+        gap: 5px;
+        padding: 5px;
+    }
+
+    section {
+        padding: 8px;
+    }
+
+    .player-avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+    .player-name {
+        font-size: 1rem;
+    }
+
+    .character-item {
+        min-width: 60px;
+    }
+
+    .character-avatar-small {
+        width: 40px;
+        height: 40px;
+    }
+
+    .character-name-small {
+        font-size: 0.65rem;
+    }
+
+    .character-tooltip {
+        width: 130px;
+        font-size: 0.75rem;
+    }
+
+    .process-history h3,
+    .all-characters h3,
+    .clues-area h3,
+    .action-log h3 {
+        font-size: 1rem;
+    }
+
+    #next-process-btn {
+        padding: 10px 25px;
+        font-size: 1.1rem;
+    }
 }
 
-.history-item.clickable:hover {
-    background: rgba(106, 17, 203, 0.2);
+/* 回顾控制按钮样式 */
+.review-controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.return-btn {
+    background: #2575fc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(37, 117, 252, 0.3);
+}
+
+.return-btn:hover {
+    background: #1a67e8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 117, 252, 0.4);
+}
+
+/* 流程历史中正在回顾的流程项样式 */
+.history-item.reviewing {
+    background: rgba(37, 117, 252, 0.3);
+    color: white;
+    font-weight: 500;
+    border-left: 3px solid #2575fc;
+}
+
+/* 真相流程项样式 */
+.history-item.truth-item {
+    background: rgba(255, 193, 7, 0.3);
+    color: white;
+    font-weight: 500;
+    border-left: 3px solid #ffc107;
+}
+
+/* 回顾控制按钮样式 */
+.review-controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.return-btn {
+    background: #2575fc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(37, 117, 252, 0.3);
+}
+
+.return-btn:hover {
+    background: #1a67e8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 117, 252, 0.4);
+}
+
+/* 流程历史中正在回顾的流程项样式 */
+.history-item.reviewing {
+    background: rgba(37, 117, 252, 0.3);
+    color: white;
+    font-weight: 500;
+    border-left: 3px solid #2575fc;
 }

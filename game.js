@@ -11,6 +11,9 @@ let choiceAnswer = null;
 let truthContent = null;
 let isShowingTruth = false;
 let processHistory = []; // 用于存储已完成的流程
+let choiceHistory = {}; // 存储每个choice流程的选择结果
+let isReviewingHistory = false; // 标记是否正在回顾历史流程
+let reviewingProcessIndex = null; // 正在回顾的流程索引
 
 // DOM 加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
@@ -123,7 +126,7 @@ function updateAllCharacters() {
 
         characterItem.innerHTML = `
             <div class="character-avatar-small">
-                <img src="${scriptId}/${data.id}/avatar.png" alt="${name}头像">
+                <img src="${scriptId}/${data.id}/avatar.png" alt="${name}头像" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMzMzMiLz48dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5Lq6PC90ZXh0Pjwvc3ZnPg=='">
             </div>
             <div class="character-name-small">${name}</div>
             <div class="character-tooltip">
@@ -155,7 +158,12 @@ async function loadTruthContent() {
 
 // 显示当前流程
 function showCurrentProcess() {
+    // 重置回顾状态
+    isReviewingHistory = false;
+    reviewingProcessIndex = null;
+
     if (isShowingTruth) {
+        showTruth();
         return;
     }
 
@@ -188,15 +196,31 @@ function showCurrentProcess() {
             showClueProcess(currentProcess);
             break;
     }
+
+    // 更新按钮
+    updateNextButton();
 }
 
 // 添加到流程历史
 function addToProcessHistory(process) {
-    processHistory.push({
-        name: process.name,
-        type: process.type,
-        index: currentProcessIndex
-    });
+    // 检查是否已经存在相同的流程
+    const existingIndex = processHistory.findIndex(p => p.index === currentProcessIndex);
+
+    if (existingIndex === -1) {
+        // 如果不存在，添加新流程
+        processHistory.push({
+            name: process.name,
+            type: process.type,
+            index: currentProcessIndex
+        });
+    } else {
+        // 如果已存在，更新流程信息
+        processHistory[existingIndex] = {
+            name: process.name,
+            type: process.type,
+            index: currentProcessIndex
+        };
+    }
 
     updateProcessHistory();
 }
@@ -206,9 +230,16 @@ function updateProcessHistory() {
     const historyList = document.getElementById('history-list');
     historyList.innerHTML = '';
 
+    // 添加普通流程历史
     processHistory.forEach((process, index) => {
         const historyItem = document.createElement('div');
-        historyItem.className = `history-item ${index === processHistory.length - 1 ? 'current' : ''}`;
+
+        // 判断是否为当前流程
+        const isCurrent = !isReviewingHistory && !isShowingTruth && index === processHistory.length - 1;
+        // 判断是否为正在回顾的流程
+        const isReviewing = isReviewingHistory && process.index === reviewingProcessIndex;
+
+        historyItem.className = `history-item ${isCurrent ? 'current' : ''} ${isReviewing ? 'reviewing' : ''}`;
         historyItem.textContent = `${process.name} (${process.type})`;
 
         // 为plot流程添加点击事件
@@ -223,6 +254,18 @@ function updateProcessHistory() {
         historyList.appendChild(historyItem);
     });
 
+    // 如果正在显示真相，添加真相到流程历史
+    if (isShowingTruth) {
+        const truthItem = document.createElement('div');
+        truthItem.className = 'history-item truth-item current';
+        truthItem.textContent = '真相 (truth)';
+        truthItem.classList.add('clickable');
+        truthItem.addEventListener('click', function() {
+            showTruth();
+        });
+        historyList.appendChild(truthItem);
+    }
+
     // 滚动到底部
     historyList.scrollTop = historyList.scrollHeight;
 }
@@ -232,6 +275,10 @@ async function replayPlotProcess(processIndex) {
     try {
         const process = processData.data[processIndex];
 
+        // 设置回顾状态
+        isReviewingHistory = true;
+        reviewingProcessIndex = parseInt(processIndex);
+
         // 加载剧情文本
         let plotPath = `${scriptId}/${characterId}/plot/${process.name}.txt`;
 
@@ -239,28 +286,83 @@ async function replayPlotProcess(processIndex) {
         if (processIndex > 0) {
             const previousProcess = processData.data[processIndex - 1];
             if (previousProcess.type === 'choice') {
-                // 这里我们无法知道当时的选择，所以显示默认文本
-                // 在实际应用中，可能需要存储用户的选择
-                plotPath = `${scriptId}/${characterId}/plot/${process.name}.txt`;
+                // 使用之前存储的选择结果
+                const choiceProcessName = previousProcess.name;
+                if (choiceHistory[choiceProcessName]) {
+                    plotPath = `${scriptId}/${characterId}/plot/${process.name}/${choiceHistory[choiceProcessName]}.txt`;
+                } else {
+                    // 如果没有存储选择结果，使用默认文本
+                    plotPath = `${scriptId}/${characterId}/plot/${process.name}.txt`;
+                }
             }
         }
 
         const response = await fetch(plotPath);
         const plotText = await response.text();
 
-        // 显示剧情内容
+        // 显示剧情内容和返回按钮
         document.getElementById('content-container').innerHTML = `
             <div class="plot-text">${plotText}</div>
+            <div class="review-controls">
+                <button id="return-to-current-btn" class="return-btn">返回当前流程</button>
+            </div>
         `;
+
+        // 添加返回按钮事件
+        document.getElementById('return-to-current-btn').addEventListener('click', returnToCurrentProcess);
+
+        // 更新流程历史显示
+        updateProcessHistory();
 
         // 记录操作日志
         addActionLog(`重新观看: ${process.name}`);
+
+        // 更新流程控制按钮
+        updateReviewButton();
 
     } catch (error) {
         console.error('重新加载剧情失败:', error);
         document.getElementById('content-container').innerHTML = `
             <div class="plot-text">剧情内容加载失败。</div>
+            <div class="review-controls">
+                <button id="return-to-current-btn" class="return-btn">返回当前流程</button>
+            </div>
         `;
+
+        // 添加返回按钮事件
+        document.getElementById('return-to-current-btn').addEventListener('click', returnToCurrentProcess);
+
+        // 更新流程控制按钮
+        updateReviewButton();
+    }
+}
+
+// 返回当前流程
+function returnToCurrentProcess() {
+    // 重置回顾状态
+    isReviewingHistory = false;
+    reviewingProcessIndex = null;
+
+    // 显示当前流程
+    if (isShowingTruth) {
+        showTruth();
+    } else {
+        showCurrentProcess();
+    }
+
+    // 记录操作日志
+    addActionLog(`返回当前流程`);
+}
+
+// 更新回顾状态下的按钮
+function updateReviewButton() {
+    const nextButton = document.getElementById('next-process-btn');
+
+    if (isReviewingHistory) {
+        nextButton.disabled = true;
+        nextButton.textContent = '回顾中...';
+    } else {
+        updateNextButton();
     }
 }
 
@@ -276,6 +378,10 @@ async function showPlotProcess(process) {
             if (previousProcess.type === 'choice' && choiceAnswer) {
                 // 使用choice流程中选择的选项对应的文本
                 plotPath = `${scriptId}/${characterId}/plot/${process.name}/${choiceAnswer}.txt`;
+
+                // 存储选择结果，用于重新观看
+                choiceHistory[previousProcess.name] = choiceAnswer;
+
                 // 重置choiceAnswer，避免影响后续流程
                 choiceAnswer = null;
             }
@@ -288,9 +394,6 @@ async function showPlotProcess(process) {
         document.getElementById('content-container').innerHTML = `
             <div class="plot-text">${plotText}</div>
         `;
-
-        // 更新按钮
-        updateNextButton();
 
     } catch (error) {
         console.error('加载剧情失败:', error);
@@ -360,9 +463,6 @@ async function showVoteProcess(process) {
                 checkVoteCompletion();
             });
         });
-
-        // 更新按钮
-        updateNextButton();
 
     } catch (error) {
         console.error('加载投票失败:', error);
@@ -442,9 +542,6 @@ async function showChoiceProcess(process) {
             });
         });
 
-        // 更新按钮
-        updateNextButton();
-
     } catch (error) {
         console.error('加载选择失败:', error);
         document.getElementById('content-container').innerHTML = `
@@ -480,9 +577,6 @@ async function showClueProcess(process) {
             // 放置线索物品
             placeClueItems(clueItemsContainer, cluesData, sceneElement, backgroundImg);
         };
-
-        // 更新按钮
-        updateNextButton();
 
     } catch (error) {
         console.error('加载线索失败:', error);
@@ -702,14 +796,25 @@ function checkCluesCompletion() {
 // 显示真相
 function showTruth() {
     isShowingTruth = true;
+
+    // 显示真相内容
     document.getElementById('content-container').innerHTML = `
         <div class="truth-content">${truthContent}</div>
+        ${isReviewingHistory ? '<div class="review-controls"><button id="return-to-current-btn" class="return-btn">返回当前流程</button></div>' : ''}
     `;
+
+    // 如果是在回顾状态下显示真相，添加返回按钮事件
+    if (isReviewingHistory) {
+        document.getElementById('return-to-current-btn').addEventListener('click', returnToCurrentProcess);
+    }
 
     // 更新按钮
     const nextButton = document.getElementById('next-process-btn');
     nextButton.disabled = false;
     nextButton.textContent = '返回首页';
+
+    // 更新流程历史
+    updateProcessHistory();
 
     // 记录操作日志
     addActionLog('查看真相');
@@ -718,6 +823,13 @@ function showTruth() {
 // 更新下一步按钮
 function updateNextButton() {
     const nextButton = document.getElementById('next-process-btn');
+
+    if (isReviewingHistory) {
+        nextButton.disabled = true;
+        nextButton.textContent = '回顾中...';
+        return;
+    }
+
     const currentProcess = processData.data[currentProcessIndex];
 
     // 根据流程类型设置按钮状态
