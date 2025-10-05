@@ -4,26 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6819c957-037c-4b52-9582-c28a7dd2abbc" name="更改" comment="ing">
-      <change afterPath="$PROJECT_DIR$/2/Banquo/avatar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Banquo/process.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Lady_Macbeth/avatar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Lady_Macbeth/process.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Macbeth/avatar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Macbeth/plot/【序幕：英雄与阴影】.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Macbeth/plot/【第一轮：王座的诱惑】.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Macbeth/plot/【第二轮：深渊的回响】.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Macbeth/plot/【终章：王冠或绞索】.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Macbeth/process.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Macduff/avatar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Macduff/process.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Malcolm/avatar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/Malcolm/process.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2/THE_TRUTH.txt" beforeDir="false" afterPath="$PROJECT_DIR$/2/THE_TRUTH.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2/character.json" beforeDir="false" afterPath="$PROJECT_DIR$/2/character.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/directory.json" beforeDir="false" afterPath="$PROJECT_DIR$/directory.json" afterDir="false" />
-    </list>
+    <list default="true" id="6819c957-037c-4b52-9582-c28a7dd2abbc" name="更改" comment="ing" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -314,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759664763474</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="ing">
+      <option name="closed" value="true" />
+      <created>1759672543900</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1759672543900</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -357,6 +357,7 @@
   - # Mac
     - 直接打开终端执行`python3 -m http.server 8080`
     - 在浏览器地址栏输入`http://localhost:8080/`
-
+## GitHub page
+- 请fork后自行设置
 
 
