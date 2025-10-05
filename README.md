@@ -334,6 +334,29 @@
 - 具体文件格式请去上方查找
 - 此文件的名称在流程文件`process.json`中被vote流程指定
 
+# 部署
+## 直接在浏览器打开
+- 在终端使用参数 `--allow-file-access-from-files`，打开浏览器后再拖入index.hml文件
+  - # Windows
+    - start [chrom浏览器路径] --allow-file-access-from-files
+    - start "C:\Users\Public\Desktop\Google Chrome.lnk" --allow-file-access-from-files
+    - start "C:\Program Files\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files
+  - # Mac
+    - open -a "Google Chrome" --args --allow-file-access-from-files
+## pyton
+- 终端使用python参数`-m http.server 8000`
+  - # Windows
+    - 先到python官网下载python并安装，然后在下面两种方法中选一个
+      1. 打开这个项目的文件夹，在项目根目录右键选择`在终端中输入
+         - `python -m http.server 8080`
+         - 在浏览器地址栏输入`http://localhost:8080/`
+      2. 在文件夹的地址栏直接运行服务
+         - 打开项目文件夹
+         - 在地址栏`python -m http.server 8080`
+         - 在浏览器地址栏输入`http://localhost:8080/`
+  - # Mac
+    - 直接打开终端执行`python3 -m http.server 8080`
+    - 在浏览器地址栏输入`http://localhost:8080/`
 
 
 

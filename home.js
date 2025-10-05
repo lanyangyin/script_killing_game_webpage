@@ -67,8 +67,9 @@ async function loadScriptsData() {
         // 填充标签筛选器
         populateTagFilter();
 
-        // 初始显示所有剧本
+        // 初始显示所有剧本，并按location排序
         filteredScripts = [...allScripts];
+        sortScripts('location'); // 确保初始按推荐排序
         displayScripts();
     } catch (error) {
         console.error('加载剧本数据失败:', error);
@@ -89,7 +90,7 @@ function populateTagFilter() {
     });
 }
 
-// 筛选剧本
+// 筛选剧本 - 确保筛选后也正确排序
 function filterScripts() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const selectedTag = document.getElementById('tag-filter').value;
@@ -124,19 +125,23 @@ function filterScripts() {
     displayScripts();
 }
 
-// 剧本排序
+// 剧本排序 - 修复排序逻辑
 function sortScripts(sortBy) {
     switch(sortBy) {
         case 'location':
+            // 按location从大到小排序
             filteredScripts.sort((a, b) => b.location - a.location);
             break;
         case 'name':
+            // 按名称中文排序
             filteredScripts.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
             break;
         case 'difficulty':
+            // 按难度从大到小排序
             filteredScripts.sort((a, b) => b.difficulty - a.difficulty);
             break;
         default:
+            // 默认按推荐排序
             filteredScripts.sort((a, b) => b.location - a.location);
     }
 }
@@ -154,13 +159,16 @@ function displayScripts() {
 }
 
 // 创建剧本卡片
-// 在 createScriptCard 函数中，为卡片添加点击事件
+// 创建剧本卡片 - 添加调试信息（可选）
 function createScriptCard(script) {
     // 生成难度星级
     const difficultyStars = '★'.repeat(script.difficulty) + '☆'.repeat(5 - script.difficulty);
 
     // 处理标签
     const tags = script.tag.includes('-') ? allTags : script.tag;
+
+    // 调试信息（可选，可以在控制台查看排序是否正确）
+    console.log(`剧本: ${script.name}, location: ${script.location}, difficulty: ${script.difficulty}`);
 
     return `
         <div class="script-card" data-id="${script.id}">
@@ -182,6 +190,10 @@ function createScriptCard(script) {
                     <div class="meta-item">
                         <span>难度:</span>
                         <span class="difficulty-stars">${difficultyStars}</span>
+                    </div>
+                    <!-- 添加location显示用于调试 -->
+                    <div class="meta-item" style="display: none;">
+                        <span>推荐度: ${script.location}</span>
                     </div>
                 </div>
 

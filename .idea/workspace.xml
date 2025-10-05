@@ -5,32 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6819c957-037c-4b52-9582-c28a7dd2abbc" name="更改" comment="ing">
-      <change afterPath="$PROJECT_DIR$/2/THE_TRUTH.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/character.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2/cover.webp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/THE_TRUTH.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/avatar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/choice/choice1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/clues.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/iconic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/线索1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/物品1/线索2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/iconic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/线索a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/clue/scene1/物品2/线索b.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/plot/choice1章节/choice1章节0.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/plot/choice1章节/choice1章节1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/plot/序章.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/plot/第一章.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/process.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c1/vote/vote1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c2/avatar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/c2/process.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/character.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/0/cover.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/directory.json" beforeDir="false" afterPath="$PROJECT_DIR$/directory.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/home.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,7 +284,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759659100037</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="ing">
+      <option name="closed" value="true" />
+      <created>1759661061220</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1759661061220</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
