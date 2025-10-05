@@ -4,7 +4,7 @@
       "name": "DEMO",
       "introduction": "这是一段剧本背景介绍示例",
       "hint": "这是一段参与剧本前的提示示例",
-      "number_of_people": 4,
+      "number_of_people": 2,
       "tag": ["推理", "新手"],
       "difficulty": 1,
       "location": 0.1,
@@ -25,10 +25,10 @@
       "id": -1
     },
     {
-      "name": "麦克白：血冠与预言",
+      "name": "《麦克白：血冠与预言》",
       "introduction": "苏格兰国王邓肯在麦克白的城堡中离奇死亡，是疾病还是谋杀？女巫的预言将麦克白推向王座，却也埋下了背叛与猜疑的种子。五位关键人物齐聚于此，你们必须在加冕仪式前找出真相——是拥立英雄为王，还是另立新君？命运掌握在你们手中。",
       "hint": "本剧本为演示向剧本杀",
-      "number_of_people": 0,
+      "number_of_people": 5,
       "tag": ["新手"],
       "difficulty": 2,
       "location": 0.2,

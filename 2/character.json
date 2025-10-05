@@ -1,1 +1,22 @@
-{}
+{
+  "麦克白": {
+    "introduction": "苏格兰的战功赫赫的英雄，邓肯国王的表亲，新晋的“考特爵士”",
+    "id": "Macbeth"
+  },
+  "麦克白夫人": {
+    "introduction": "麦克白的妻子，一位拥有强烈野心和控制欲的贵妇。",
+    "id": "Lady_Macbeth"
+  },
+  "马尔康": {
+    "introduction": "邓肯国王的长子，王位第一顺位继承人",
+    "id": "Malcolm"
+  },
+  "麦克德夫": {
+    "introduction": "一位忠诚而正义的贵族",
+    "id": "Macduff"
+  },
+  "班柯": {
+    "introduction": "麦克白的战友，忠诚的大将",
+    "id": "Banquo"
+  }
+}
