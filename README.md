@@ -1,6 +1,7 @@
 # script_killing_game_webpage
 剧本杀网页
 >这是一个剧本杀静态网站示例
+> GitHub Page：https://lanyangyin.github.io/script_killing_game_webpage
 
 # 总体剧本基本数据`directory.json`
 ```json
