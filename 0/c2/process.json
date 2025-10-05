@@ -1,28 +1,3 @@
 {
-  "data": [
-    {
-      "type": "plot",
-      "name": "序章"
-    },
-    {
-      "type": "clue",
-      "name": "scene1"
-    },
-    {
-      "type": "vote",
-      "name": "vote1"
-    },
-    {
-      "type": "plot",
-      "name": "第一章"
-    },
-    {
-      "type": "choice",
-      "name": "choice1"
-    },
-    {
-      "type": "plot",
-      "name": "choice1章节"
-    }
-  ]
+  "data": []
 }

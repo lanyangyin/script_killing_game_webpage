@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6819c957-037c-4b52-9582-c28a7dd2abbc" name="更改" comment="ing">
+      <change afterPath="$PROJECT_DIR$/-1/THE_TRUTH.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/-1/character.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/0/c2/process.json" beforeDir="false" afterPath="$PROJECT_DIR$/0/c2/process.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/game.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流程" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,18 +49,18 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/Documents/html/script_killing_game_webpage/0/c1/clue/scene1/物品1",
+    "last_opened_file_path": "D:/Documents/html/script_killing_game_webpage/-1",
     "settings.editor.selected.configurable": "flutter.settings",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documents\html\script_killing_game_webpage\-1" />
       <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1\物品1" />
       <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1\物品2" />
       <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1" />
       <recent name="D:\Documents\html\script_killing_game_webpage\0\c2" />
-      <recent name="D:\Documents\html\script_killing_game_webpage\script\0\plot\character1" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Documents\html\script_killing_game_webpage\0\c1\clue\scene1\物品2" />
@@ -261,7 +261,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759585484588</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="ing">
+      <option name="closed" value="true" />
+      <created>1759598435992</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1759598435992</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
