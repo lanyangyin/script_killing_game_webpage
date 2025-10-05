@@ -10,7 +10,7 @@
       "location": 0.1,
       "time_required_for_game": 1.5,
       "last_time_played": 0,
-      "id": 0
+      "id": 1
     },
     {
       "name": "敬请期待",
@@ -23,6 +23,18 @@
       "time_required_for_game": 0,
       "last_time_played": 0,
       "id": -1
+    },
+    {
+      "name": "《麦克白：血冠与预言》",
+      "introduction": "苏格兰国王邓肯在麦克白的城堡中离奇死亡，是疾病还是谋杀？女巫的预言将麦克白推向王座，却也埋下了背叛与猜疑的种子。五位关键人物齐聚于此，你们必须在加冕仪式前找出真相——是拥立英雄为王，还是另立新君？命运掌握在你们手中。",
+      "hint": "本剧本为演示向剧本杀",
+      "number_of_people": 0,
+      "tag": ["新手"],
+      "difficulty": 2,
+      "location": 0.2,
+      "time_required_for_game": 0.75,
+      "last_time_played": 0,
+      "id": 2
     }
   ],
   "tags": ["推理", "变格", "本格", "新本格", "校园", "都市", "新手", "古代", "情感", "硬核", "现代"]
